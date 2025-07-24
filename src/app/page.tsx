@@ -1,13 +1,15 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
+import { Provider } from 'react-redux';
+import {store} from '@/redux/store';
 import Homepage from '@/components/Homepage';
 import Navigation from '@/components/navbar/Navigation';
 
 export default function Home() {
 
   return (
-    <div>
+    <Provider store={store}>
       {/* Alert Banner */}
       <div className="bg-saffron text-white py-2 px-4 text-center">
         <p className="text-sm">
@@ -17,7 +19,8 @@ export default function Home() {
       {/* Navigation */}
       <Navigation />
 
-      {/* <Homepage setCurrentPage={setCurrentPage} /> */}
-    </div>
+      <Homepage />
+    </Provider>
+
   );
 }

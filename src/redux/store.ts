@@ -1,10 +1,8 @@
-import { configureStore } from '@reduxjs/toolkit';
-import exampleReducer from '@/redux/exampleSlice';
+import { configureStore } from "@reduxjs/toolkit";
+import pageReducer from "@/redux/pageSlice";
 
 export const store = configureStore({
-  reducer: {
-    example: exampleReducer,
-  },
+  reducer: { page: pageReducer },
 });
 
 export type RootState = ReturnType<typeof store.getState>;
