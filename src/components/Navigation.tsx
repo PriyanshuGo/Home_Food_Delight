@@ -21,10 +21,10 @@ export default function Navigation() {
   };
 
   const navItems = [
-    { id: 'home', label: 'Home', link: '/rootClient/home' },
-    { id: 'menu', label: 'Menu', link: '/rootClient/menu' },
-    { id: 'reviews', label: 'Reviews', link: '/rootClient/reviews' },
-    { id: 'contact', label: 'Contact', link: '/rootClient/contact' },
+    { id: 'home', label: 'Home', link: '/' },
+    { id: 'menu', label: 'Menu', link: '/menu' },
+    { id: 'reviews', label: 'Reviews', link: '/reviews' },
+    { id: 'contact', label: 'Contact', link: '/contact' },
   ];
 
   return (
