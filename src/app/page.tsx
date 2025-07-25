@@ -4,11 +4,10 @@ import { Button } from '../components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
-import { useDispatch } from 'react-redux';
-import { setCurrentPage } from '@/redux/pageSlice';
+import { useRouter } from 'next/navigation';
 
 export default function Homepage() {
-  const dispatch = useDispatch();
+  const router = useRouter();
 
   const popularDishes = [
     {
@@ -121,7 +120,7 @@ export default function Homepage() {
               <Button
                 size="lg"
                 className="bg-saffron hover:bg-saffron-dark text-white px-8 py-3 text-lg shadow-warm-lg"
-                onClick={() => dispatch(setCurrentPage('menu'))}
+                onClick={() => router.push(('/menu'))}
               >
                 View Today's Menu
                 <ArrowRight className="ml-2 h-5 w-5" />
@@ -234,7 +233,7 @@ export default function Homepage() {
                     <Button
                       size="sm"
                       className="bg-saffron hover:bg-saffron-dark text-white"
-                      onClick={() => dispatch(setCurrentPage('menu'))}
+                      onClick={() => router.push(('/menu'))}
                     >
                       Add to Cart
                     </Button>
@@ -248,7 +247,7 @@ export default function Homepage() {
             <Button
               variant="outline"
               className="border-saffron text-saffron hover:bg-saffron hover:text-white"
-              onClick={() => dispatch(setCurrentPage('menu'))}
+              onClick={() => router.push(('/menu'))}
             >
               View Full Menu
               <ArrowRight className="ml-2 h-4 w-4" />
@@ -321,7 +320,7 @@ export default function Homepage() {
               <Button
                 size="lg"
                 className="bg-saffron text-white hover:bg-saffron-dark px-8 py-3 text-lg font-semibold shadow-md"
-                onClick={() => dispatch(setCurrentPage('menu'))}
+                onClick={() => router.push(('/menu'))}
               >
                 View Today’s Menu
                 <ArrowRight className="ml-2 h-5 w-5" />
