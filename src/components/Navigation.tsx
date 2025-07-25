@@ -4,21 +4,13 @@ import React, { useState } from 'react';
 import { ShoppingBag, Menu, X, ChefHat } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { useDispatch, useSelector } from 'react-redux';
-import { setCurrentPage } from '@/redux/pageSlice';
-import type { RootState } from '@/redux/store'; // ✅ Correctly typed RootState
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
 export default function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const currentPage = useSelector((state: RootState) => state.page.currentPage);
-  const dispatch = useDispatch();
-
-  const handleNavClick = (pageId: string) => {
-    dispatch(setCurrentPage(pageId));
-    setIsMobileMenuOpen(false);
-  };
+  const pathname = usePathname();
 
   const navItems = [
     { id: 'home', label: 'Home', link: '/' },
@@ -44,23 +36,24 @@ export default function Navigation() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => handleNavClick(item.id)}
-                className={`relative px-3 py-2 rounded-lg transition-all duration-200 ${currentPage === item.id
-                  ? 'text-saffron bg-warm-beige'
-                  : 'text-brown hover:text-saffron hover:bg-warm-beige/50'
-                  }`}
-              >
-                <Link href={item.link}>
+            {navItems.map((item) => {
+              const isActive = pathname === item.link;
+              return (
+                <Link
+                  href={item.link}
+                  key={item.id}
+                  className={`relative px-3 py-2 rounded-lg transition-all duration-200 ${isActive
+                    ? 'text-saffron bg-warm-beige'
+                    : 'text-brown hover:text-saffron hover:bg-warm-beige/50'
+                    }`}
+                >
                   {item.label}
+                  {isActive && (
+                    <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-saffron rounded-full" />
+                  )}
                 </Link>
-                {currentPage === item.id && (
-                  <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-saffron rounded-full" />
-                )}
-              </button>
-            ))}
+              )
+            })}
           </div>
 
           {/* Cart & Mobile Menu */}
@@ -95,18 +88,22 @@ export default function Navigation() {
         {isMobileMenuOpen && (
           <div className="md:hidden border-t border-warm-beige bg-white">
             <div className="py-4 space-y-2">
-              {navItems.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => handleNavClick(item.id)}
-                  className={`block w-full text-left px-4 py-3 rounded-lg transition-all duration-200 ${currentPage === item.id
-                    ? 'text-saffron bg-warm-beige font-medium'
-                    : 'text-brown hover:text-saffron hover:bg-warm-beige/50'
-                    }`}
-                >
-                  {item.label}
-                </button>
-              ))}
+              {navItems.map((item) => {
+                const isActive = pathname === item.link;
+                return (
+                  <Link
+                    href={item.link}
+                    key={item.id}
+                    onClick={() => setIsMobileMenuOpen(false)} 
+                    className={`block w-full text-left px-4 py-3 rounded-lg transition-all duration-200 ${isActive
+                      ? 'text-saffron bg-warm-beige font-medium'
+                      : 'text-brown hover:text-saffron hover:bg-warm-beige/50'
+                      }`}
+                  >
+                    {item.label}
+                  </Link>
+                )
+              })}
             </div>
           </div>
         )}
