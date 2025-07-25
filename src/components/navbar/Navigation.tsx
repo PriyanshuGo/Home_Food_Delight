@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentPage } from '@/redux/pageSlice';
 import type { RootState } from '@/redux/store'; // ✅ Correctly typed RootState
+import Link from 'next/link';
 
 export default function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -20,10 +21,10 @@ export default function Navigation() {
   };
 
   const navItems = [
-    { id: 'home', label: 'Home' },
-    { id: 'menu', label: 'Menu' },
-    { id: 'reviews', label: 'Reviews' },
-    { id: 'contact', label: 'Contact' },
+    { id: 'home', label: 'Home', link: '/rootClient/home' },
+    { id: 'menu', label: 'Menu', link: '/rootClient/menu' },
+    { id: 'reviews', label: 'Reviews', link: '/rootClient/reviews' },
+    { id: 'contact', label: 'Contact', link: '/rootClient/contact' },
   ];
 
   return (
@@ -47,13 +48,14 @@ export default function Navigation() {
               <button
                 key={item.id}
                 onClick={() => handleNavClick(item.id)}
-                className={`relative px-3 py-2 rounded-lg transition-all duration-200 ${
-                  currentPage === item.id
-                    ? 'text-saffron bg-warm-beige'
-                    : 'text-brown hover:text-saffron hover:bg-warm-beige/50'
-                }`}
+                className={`relative px-3 py-2 rounded-lg transition-all duration-200 ${currentPage === item.id
+                  ? 'text-saffron bg-warm-beige'
+                  : 'text-brown hover:text-saffron hover:bg-warm-beige/50'
+                  }`}
               >
-                {item.label}
+                <Link href={item.link}>
+                  {item.label}
+                </Link>
                 {currentPage === item.id && (
                   <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-saffron rounded-full" />
                 )}
@@ -97,11 +99,10 @@ export default function Navigation() {
                 <button
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
-                  className={`block w-full text-left px-4 py-3 rounded-lg transition-all duration-200 ${
-                    currentPage === item.id
-                      ? 'text-saffron bg-warm-beige font-medium'
-                      : 'text-brown hover:text-saffron hover:bg-warm-beige/50'
-                  }`}
+                  className={`block w-full text-left px-4 py-3 rounded-lg transition-all duration-200 ${currentPage === item.id
+                    ? 'text-saffron bg-warm-beige font-medium'
+                    : 'text-brown hover:text-saffron hover:bg-warm-beige/50'
+                    }`}
                 >
                   {item.label}
                 </button>
