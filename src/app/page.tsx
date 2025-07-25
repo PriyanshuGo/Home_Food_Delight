@@ -3,7 +3,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import {store} from '@/redux/store';
-import Homepage from '@/components/Homepage';
+import Homepage from '@/pages/Homepage';
 import Navigation from '@/components/navbar/Navigation';
 
 export default function Home() {
