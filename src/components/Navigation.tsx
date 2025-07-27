@@ -26,7 +26,7 @@ export default function Navigation() {
           {/* Logo */}
           <div className="flex items-center space-x-3 cursor-pointer">
             <div className="w-10 h-10 bg-gradient-warm rounded-full flex items-center justify-center">
-              <ChefHat className="h-6 w-6 text-black" />
+              <img src="/logo.jpg" alt="Logo" className="h-10 w-10 rounded-full" />
             </div>
             <div>
               <h1 className="text-lg font-bold text-brown">Home Food Delight</h1>
@@ -94,7 +94,7 @@ export default function Navigation() {
                   <Link
                     href={item.link}
                     key={item.id}
-                    onClick={() => setIsMobileMenuOpen(false)} 
+                    onClick={() => setIsMobileMenuOpen(false)}
                     className={`block w-full text-left px-4 py-3 rounded-lg transition-all duration-200 ${isActive
                       ? 'text-saffron bg-warm-beige font-medium'
                       : 'text-brown hover:text-saffron hover:bg-warm-beige/50'

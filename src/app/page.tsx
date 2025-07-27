@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../co
 import { Badge } from '../components/ui/badge';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 import { useRouter } from 'next/navigation';
+import Footer from '@/components/Footer';
 
 export default function Homepage() {
   const router = useRouter();
@@ -331,13 +332,14 @@ export default function Homepage() {
                 variant="ghost"
                 className="border border-saffron text-saffron hover:bg-saffron hover:text-white px-8 py-3 text-lg"
               >
-                Call Us: +91 98765 43210
+                Call Us: +91 88822 92184
               </Button>
             </div>
           </div>
         </div>
       </section>
 
+      <Footer />
     </div>
   );
 }
