@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
 import ReduxProvider from '@/components/ReduxProvider'; // ✅ Client wrapper
+import ScrollManager from "@/components/ScrollManager";
 
 
 const geistSans = Geist({
@@ -38,6 +39,7 @@ export default function RootLayout({
             </p>
           </div>
           <Navigation />
+          <ScrollManager />
           {children}
         </ReduxProvider>
       </body>
