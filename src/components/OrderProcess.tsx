@@ -1,29 +1,6 @@
-import { ArrowRight, MessageSquare, ChefHat, } from 'lucide-react';
-
+import { ArrowRight } from 'lucide-react';
+import {processSteps} from '@/utils/constants';
 function OrderProcess() {
-    const processSteps = [
-        {
-            step: 1,
-            title: 'Browse Menu',
-            description: 'Explore our daily fresh menu with authentic home-style dishes',
-            icon: ChefHat,
-            color: 'bg-saffron'
-        },
-        {
-            step: 2,
-            title: 'Fill Your Details',
-            description: 'Add your contact information and delivery preferences',
-            icon: MessageSquare,
-            color: 'bg-saffron-light'
-        },
-        {
-            step: 3,
-            title: 'Send Order on WhatsApp',
-            description: 'Complete your order through our convenient WhatsApp system',
-            icon: MessageSquare,
-            color: 'bg-saffron-dark'
-        }
-    ];
     return (
         <div>
             <section className="py-16 bg-white">
