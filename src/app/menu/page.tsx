@@ -1,13 +1,21 @@
 "use client";
 import { useState } from 'react';
-import { Plus, Star, Clock, Leaf, ShoppingCart } from 'lucide-react';
+import { Plus, Star, Clock, Leaf } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { ImageWithFallback } from '@/components/figma/ImageWithFallback';
 import { menuItems } from '@/utils/constants';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart, updateQuantity, removeFromCart } from '@/redux/cartSlice';
+import { ProductItem, Category } from '@/types/product'
+import { CartItem } from '@/types/product';
+
 const MenuPage = () => {
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state: any) => state.cart.items);
+
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   const categories = [
@@ -26,6 +34,17 @@ const MenuPage = () => {
       item.description.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesCategory && matchesSearch;
   });
+
+  const handleAddToCart = (item: ProductItem): void => {
+    dispatch(addToCart({ ...item, quantity: 1 }));
+  }
+  const handleUpdateQuantity = (id: string, quantity: number) => {
+    dispatch(updateQuantity({ id, quantity }));
+  };
+
+  const handleRemoveFromCart = (id: string) => {
+    dispatch(removeFromCart(id));
+  };
 
   return (
     <div>
@@ -54,15 +73,15 @@ const MenuPage = () => {
             </div>
 
             <div className="flex flex-wrap justify-center gap-2">
-              {categories.map((category) => (
+              {categories.map((category: Category) => (
                 <Button
                   key={category.id}
                   variant={activeCategory === category.id ? 'default' : 'outline'}
                   size="sm"
                   onClick={() => setActiveCategory(category.id)}
                   className={`flex items-center space-x-2 ${activeCategory === category.id
-                      ? 'bg-saffron hover:bg-saffron-dark text-white'
-                      : 'border-saffron text-saffron hover:bg-saffron hover:text-white'
+                    ? 'bg-saffron hover:bg-saffron-dark text-white'
+                    : 'border-saffron text-saffron hover:bg-saffron hover:text-white'
                     }`}                >
                   <span>{category.icon}</span>
                   <span>{category.name}</span>
@@ -72,77 +91,112 @@ const MenuPage = () => {
           </div>
 
           {/* Menu Items Grid */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
-            {filteredItems.map((item) => (
-              <Card
-                key={item.id}
-                className="overflow-hidden hover:shadow-warm-lg transition-all duration-300 border-0 bg-white"
-              >
-                {/* Image Section */}
-                <div className="relative">
-                  <div className="aspect-[4/3] overflow-hidden">
-                    <ImageWithFallback
-                      src={item.image}
-                      alt={item.name}
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 mb-8">
 
-                  {/* Badges */}
-                  <div className="absolute top-3 left-3 flex flex-col gap-2">
-                    {item.popular && (
-                      <Badge className="bg-saffron text-white">
-                        <Star className="h-3 w-3 mr-1" />
-                        Popular
-                      </Badge>
-                    )}
-                    {item.veg && (
-                      <Badge variant="secondary" className="bg-green-100 text-green-800">
-                        <Leaf className="h-3 w-3 mr-1" />
-                        Veg
-                      </Badge>
-                    )}
-                  </div>
-
-                  {/* Rating */}
-                  <div className="absolute top-3 right-3 bg-white/90 px-2 py-1 rounded-full">
-                    <div className="flex items-center space-x-1">
-                      <Star className="h-3 w-3 text-saffron fill-current" />
-                      <span className="text-xs font-medium">{item.rating}</span>
+            {filteredItems.map((item: ProductItem) => {
+              const cartItem = cartItems.find((ci: CartItem) => ci.id === item.id);
+              const quantity = cartItem ? cartItem.quantity : 0;
+              return (
+                <Card
+                  key={item.id}
+                  className="overflow-hidden hover:shadow-warm-lg transition-all duration-300 border-0 bg-white flex flex-col justify-between"
+                >
+                  {/* Image Section */}
+                  <div className="relative">
+                    <div className="aspect-[4/3] overflow-hidden">
+                      <ImageWithFallback
+                        src={item.image}
+                        alt={item.name}
+                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                      />
                     </div>
-                  </div>
-                </div>
 
-                {/* Card Header */}
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-lg text-brown">{item.name}</CardTitle>
-                  <CardDescription className="text-sm text-gray-600">
-                    {item.description}
-                  </CardDescription>
-                </CardHeader>
+                    {/* Badges */}
+                    <div className="absolute top-3 left-3 flex flex-col gap-2">
+                      {item.popular && (
+                        <Badge className="bg-saffron text-white">
+                          <Star className="h-3 w-3 mr-1" />
+                          Popular
+                        </Badge>
+                      )}
+                      {item.veg && (
+                        <Badge variant="secondary" className="bg-green-100 text-green-800">
+                          <Leaf className="h-3 w-3 mr-1" />
+                          Veg
+                        </Badge>
+                      )}
+                    </div>
 
-                {/* Card Content */}
-                <CardContent className="pt-0">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-xl font-bold text-saffron">₹{item.price}</span>
-                    <div className="flex items-center space-x-1 text-xs text-gray-500">
-                      <Clock className="h-3 w-3" />
-                      <span>{item.preparationTime}</span>
+                    {/* Rating */}
+                    <div className="absolute top-3 right-3 bg-white/90 px-2 py-1 rounded-full">
+                      <div className="flex items-center space-x-1">
+                        <Star className="h-3 w-3 text-saffron fill-current" />
+                        <span className="text-xs font-medium">{item.rating}</span>
+                      </div>
                     </div>
                   </div>
 
-                  <Button
-                    size="sm"
-                    className="w-full bg-saffron hover:bg-saffron-dark text-white"
-                  // onClick={() => addToCart(item)}
-                  // disabled={/* disabled based on time */}
-                  >
-                    <Plus className="h-4 w-4 mr-2" />
-                    Add to Cart
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
+                  {/* Card Header */}
+                  <CardHeader>
+                    <CardTitle className="text-lg text-brown">{item.name}</CardTitle>
+                    <CardDescription className="text-sm text-gray-600">
+                      {item.description}
+                    </CardDescription>
+                  </CardHeader>
+
+                  {/* Card Content */}
+                  <CardContent>
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-xl font-bold text-saffron">₹{item.price}</span>
+                      <div className="flex items-center space-x-1 text-xs text-gray-500">
+                        <Clock className="h-3 w-3" />
+                        <span>{item.preparationTime}</span>
+                      </div>
+                    </div>
+
+                    {quantity > 0 ? (
+                      <div className='flex items-center justify-between'>
+                        <div>
+                          <Button
+                            variant="default"
+                            className="bg-saffron hover:bg-saffron-dark text-white"
+                            onClick={() => handleUpdateQuantity(item.id, quantity - 1)}
+                          >
+                            -
+                          </Button>
+                          <span className="mx-2">{quantity}</span>
+                          <Button
+                            variant="default"
+                            className="bg-saffron hover:bg-saffron-dark text-white"
+                            onClick={() => handleUpdateQuantity(item.id, quantity + 1)}
+                          >
+                            +
+                          </Button>
+                        </div>
+                        <Button
+                          variant="default"
+                          className="bg-saffron hover:bg-saffron-dark text-white"
+                          onClick={() => handleRemoveFromCart(item.id)}
+                        >
+                          Remove from Cart
+                        </Button>
+                      </div>
+                    ) : (
+                      <Button
+                        size="sm"
+
+                        className="w-full bg-saffron hover:bg-saffron-dark text-white"
+                        onClick={() => handleAddToCart(item)}
+                      >
+                        <Plus className="h-4 w-4 mr-2" />
+
+                        Add to Cart
+                      </Button>
+                    )}
+                  </CardContent>
+                </Card>
+              )
+            })}
           </div>
 
           {/* No Results Message */}

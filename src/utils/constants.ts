@@ -1,6 +1,6 @@
 import { MessageSquare, ChefHat } from "lucide-react";
-
-export const menuItems = [
+import { ProductItem } from "@/types/product";
+export const menuItems: ProductItem[] = [
   {
     id: "47c53ef1",
     name: "Aloo Paratha with Raita",

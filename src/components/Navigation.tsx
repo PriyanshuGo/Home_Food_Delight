@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 export default function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -18,6 +20,8 @@ export default function Navigation() {
     { id: 'reviews', label: 'Reviews', link: '/reviews' },
     { id: 'contact', label: 'Contact', link: '/contact' },
   ];
+
+  const cartItems = useSelector((state: RootState) => state.cart.items);
 
   return (
     <nav className="bg-white shadow-lg border-b border-saffron/20 sticky top-0 z-40">
@@ -66,12 +70,12 @@ export default function Navigation() {
             >
               <ShoppingBag className="h-4 w-4 mr-2" />
               <span className="hidden sm:inline">Cart</span>
-              <Badge
+              {cartItems.length ? (<Badge
                 variant="destructive"
                 className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs bg-saffron"
               >
-                3
-              </Badge>
+                {cartItems.length}
+              </Badge>) : null}
             </Button>
 
             <Button
