@@ -1,5 +1,7 @@
-import { MapPin, Phone, Mail, Clock, ChefHat, Heart, Instagram, Facebook, Twitter } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Heart, Instagram, Twitter } from 'lucide-react';
 import { Separator } from './ui/separator';
+import Image from 'next/image';
+
 
 export default function Footer() {
 
@@ -11,7 +13,7 @@ export default function Footer() {
                     <div className="space-y-4">
                         <div className="flex items-center space-x-3">
                             <div className="flex items-center justify-center">
-                                <img src="/logo.jpg" alt="Logo" className="h-10 w-10 rounded-full" />
+                                <Image src="/logo.jpg" alt="Logo" width={40} height={40} className="rounded-full" />
                             </div>
                             <div>
                                 <h3 className="text-lg text-white">Home Food Delight</h3>
@@ -78,7 +80,7 @@ export default function Footer() {
                         <h3 className="text-lg text-white">Quick Links</h3>
                         <div className="space-y-2">
                             <a href="#menu" className="block text-sm text-white/80 hover:text-white transition-colors">
-                                Today's Menu
+                                Today&apos;s Menu
                             </a>
                             <a href="#about" className="block text-sm text-white/80 hover:text-white transition-colors">
                                 About Us

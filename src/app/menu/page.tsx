@@ -11,10 +11,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, updateQuantity, removeFromCart } from '@/redux/cartSlice';
 import { ProductItem, Category } from '@/types/product'
 import { CartItem } from '@/types/product';
+import { RootState } from '@/redux/store'; 
+
 
 const MenuPage = () => {
   const dispatch = useDispatch();
-  const cartItems = useSelector((state: any) => state.cart.items);
+  const cartItems = useSelector((state: RootState) => state.cart.items);
 
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
@@ -54,7 +56,7 @@ const MenuPage = () => {
           {/* Header Section */}
           <div className="text-center mb-8">
             <h1 className="text-3xl md:text-4xl font-bold text-brown mb-4">
-              Today's Fresh Menu
+              Today&apos;s Fresh Menu
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
               Authentic home-style cooking prepared fresh daily with traditional recipes

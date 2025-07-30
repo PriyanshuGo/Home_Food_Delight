@@ -46,7 +46,7 @@ function CustomerReviews() {
                                             <Star key={i} className="h-4 w-4 text-saffron fill-current" />
                                         ))}
                                     </div>
-                                    <p className="text-gray-700 mb-4 leading-relaxed">"{testimonial.comment}"</p>
+                                    <p className="text-gray-700 mb-4 leading-relaxed">&#34;{testimonial.comment}&#34;</p>
                                     <div className="flex items-center space-x-3">
                                         <div className="w-10 h-10 bg-gradient-warm rounded-full flex items-center justify-center">
                                             <Heart className="h-5 w-5 text-white" />

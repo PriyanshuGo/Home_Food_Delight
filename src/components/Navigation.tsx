@@ -1,13 +1,15 @@
 'use client';
 
 import React, { useState } from 'react';
-import { ShoppingBag, Menu, X, ChefHat } from 'lucide-react';
+import { ShoppingBag, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
+import Image from 'next/image';
+
 
 export default function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -30,7 +32,7 @@ export default function Navigation() {
           {/* Logo */}
           <div className="flex items-center space-x-3 cursor-pointer">
             <div className="w-10 h-10 bg-gradient-warm rounded-full flex items-center justify-center">
-              <img src="/logo.jpg" alt="Logo" className="h-10 w-10 rounded-full" />
+              <Image src="/logo.jpg" alt="Logo" width={10} height={10} className="rounded-full" />
             </div>
             <div>
               <h1 className="text-lg font-bold text-brown">Home Food Delight</h1>
