@@ -1,5 +1,5 @@
 "use client";
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Plus, Star, Clock, Leaf } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -11,16 +11,23 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, updateQuantity, removeFromCart } from '@/redux/cartSlice';
 import { ProductItem, Category } from '@/types/product'
 import { CartItem } from '@/types/product';
-import { RootState } from '@/redux/store'; 
+import { RootState } from '@/redux/store';
+import { debounce } from "@/hooks/useDebounceHook";
 
 
 const MenuPage = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state: RootState) => state.cart.items);
+  const [filteredItems, setFilteredItems] = useState<ProductItem[]>([]);
+  const debouncedSearch = useRef(
+    debounce((query: string) => {
+      handleSearch(query);
+    }, 1000)
+  ).current;
 
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
-  const categories = [
+  const categories: Category[] = [
     { id: 'all', name: 'All Items', icon: '🍽️' },                    // General dining
     { id: 'chefs-special', name: `CHEF'S SPECIAL`, icon: '👨‍🍳' },     // Chef hat icon
     { id: 'combos', name: 'COMBOS', icon: '🍱' },                    // Bento box (combo meals)
@@ -30,12 +37,31 @@ const MenuPage = () => {
     { id: 'economy-meals', name: `ECONOMY MEALS`, icon: '💰' },      // Money bag for budget meals
   ];
 
-  const filteredItems = menuItems.filter(item => {
-    const matchesCategory = activeCategory === 'all' || item.category === activeCategory;
-    const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.description.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
+  const filterByCategory = (category: string): void => {
+    const results: ProductItem[] = menuItems.filter((item: ProductItem) => {
+      if (category === 'all') {
+        return item;
+      } else {
+        return item.category === category
+      }
+    });
+    setFilteredItems(results);
+  }
+
+  const handleSearch = (query: string): void => {
+    const results = menuItems.filter((item: ProductItem) => item.name.toLowerCase().includes(query.toLowerCase()));
+    setFilteredItems(results);
+  }
+
+  useEffect(() => {
+
+  debouncedSearch(searchTerm);
+
+  }, [searchTerm])
+
+  useEffect(() => {
+    filterByCategory(activeCategory);
+  }, [activeCategory]);
 
   const handleAddToCart = (item: ProductItem): void => {
     dispatch(addToCart({ ...item, quantity: 1 }));
@@ -68,8 +94,13 @@ const MenuPage = () => {
             <div className="max-w-md mx-auto">
               <Input
                 placeholder="Search for dishes..."
-                // value={/* searchTerm */}
-                // onChange={/* setSearchTerm */}
+                value={searchTerm}
+                onChange={(e) => { setSearchTerm(e.target.value.trim()) }}
+                onClick={() => {
+                  if (searchTerm) {
+                    debounce(handleSearch, 1000)(searchTerm);
+                  }
+                }}
                 className="w-full"
               />
             </div>
