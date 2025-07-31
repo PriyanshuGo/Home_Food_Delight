@@ -1,12 +1,30 @@
+import HeroPage from '@/components/HeroPage';
+import OrderProcess from '@/components/OrderProcess';
+import PopularDishes from '@/components/PopularDishes';
+import CustomerReviews from '@/components/CustomerReviews';
+import CTA from '@/components/CTA';
+import Footer from '@/components/Footer';
 
-import React from 'react';
-import { Provider } from 'react-redux';
-import {store} from '@/redux/store';
-import Homepage from '@/pages/Homepage';
-
-export default function Home() {
-
+export default function Homepage() {
   return (
-    <div>blank test page; No longer home; HOMe starts from 'rootClient/home'</div>
+    <div className="space-y-16">
+      {/* Hero Section */}
+      <HeroPage />
+
+      {/* How It Works */}
+      <OrderProcess />
+
+      {/* Popular Dishes */}
+      <PopularDishes />
+
+      {/* Customer Reviews */}
+      <CustomerReviews />
+
+      {/* CTA Section */}
+      <CTA />
+
+      {/* Footer */}
+      <Footer />
+    </div>
   );
 }

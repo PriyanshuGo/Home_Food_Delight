@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navigation from "@/components/navbar/Navigation";
+import Navigation from "@/components/Navigation";
+import ReduxProvider from '@/components/ReduxProvider'; // ✅ Client wrapper
+import ScrollManager from "@/components/ScrollManager";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,7 +31,17 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <ReduxProvider>
+          {/* Alert Banner */}
+          <div className="bg-saffron text-white py-2 px-4 text-center">
+            <p className="text-sm">
+              🍽️ “Freshly Prepared. Google-Certified Chefs. Real Home Food — Made Just for You.”
+            </p>
+          </div>
+          <Navigation />
+          <ScrollManager />
+          {children}
+        </ReduxProvider>
       </body>
     </html>
   );

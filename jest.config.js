@@ -10,4 +10,9 @@ module.exports = {
     '^.+\\.(ts|tsx)$': 'ts-jest',
   },
   testMatch: ['**/?(*.)+(test).[tj]s?(x)'],
+    globals: {
+    'ts-jest': {
+      tsconfig: 'tsconfig.test.json'
+    }
+  }
 };
