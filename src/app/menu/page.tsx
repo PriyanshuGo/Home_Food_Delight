@@ -19,21 +19,19 @@ const MenuPage = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const [filteredItems, setFilteredItems] = useState<ProductItem[]>([]);
-  const debouncedSearch = useRef(
-    debounce((query: string) => {
-      handleSearch(query);
-    }, 1000)
-  ).current;
+  const debouncedSearch = debounce((query: string) => {
+    handleSearch(query);
+  }, 1000);
 
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   const categories: Category[] = [
     { id: 'all', name: 'All Items', icon: '🍽️' },                    // General dining
-    { id: 'chefs-special', name: `CHEF'S SPECIAL`, icon: '👨‍🍳' },     // Chef hat icon
     { id: 'combos', name: 'COMBOS', icon: '🍱' },                    // Bento box (combo meals)
     { id: 'rocking-rolls', name: `ROCKING ROLLS`, icon: '🌯' },      // Burrito/Wrap (rolls)
     { id: 'main-course', name: `MAIN COURSE`, icon: '🍛' },          // Curry rice plate
     { id: 'chinese', name: `CHINESE`, icon: '🥢' },                  // Chopsticks
+    { id: 'chefs-special', name: `CHEF'S SPECIAL`, icon: '👨‍🍳' },     // Chef hat icon
     { id: 'economy-meals', name: `ECONOMY MEALS`, icon: '💰' },      // Money bag for budget meals
   ];
 
@@ -54,9 +52,7 @@ const MenuPage = () => {
   }
 
   useEffect(() => {
-
-  debouncedSearch(searchTerm);
-
+    debouncedSearch(searchTerm);
   }, [searchTerm])
 
   useEffect(() => {

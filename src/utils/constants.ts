@@ -7,7 +7,7 @@ export const menuItems: ProductItem[] = [
     description: "Made with Desi Ghee + Freshly Mint Curd",
     price: 165,
     category: "chefs-special",
-    image: "https://source.unsplash.com/400x300/?aloo-paratha",
+    image: "/menuItems/AlooParathawithRaita.webp",
     rating: 4.8,
     veg: true,
     popular: true,
@@ -19,8 +19,7 @@ export const menuItems: ProductItem[] = [
     description: "Made with potato and onion and coriander leaves",
     price: 120,
     category: "chefs-special",
-    image:
-      "https://images.unsplash.com/photo-1604908178063-325f9e085cc9?w=400&h=300&fit=crop",
+    image: "/menuItems/BatataKandhaPoha.webp",
     rating: 4.9,
     veg: true,
     popular: false,
@@ -33,8 +32,7 @@ export const menuItems: ProductItem[] = [
       "2 bhaji pav in butter + mashed veg made in fresh tomato puree",
     price: 175,
     category: "chefs-special",
-    image:
-      "https://images.unsplash.com/photo-1604908178063-325f9e085cc9?w=400&h=300&fit=crop",
+    image: "/menuItems/PavBhaji.webp",
     rating: 4.5,
     veg: true,
     popular: false,
@@ -47,8 +45,7 @@ export const menuItems: ProductItem[] = [
       "Roll made with fresh juicy paneer, red bell pepper, onion and a variety of sauces",
     price: 195,
     category: "chefs-special",
-    image:
-      "https://images.unsplash.com/photo-1604908178063-325f9e085cc9?w=400&h=300&fit=crop",
+    image: "/menuItems/PaneerLajawabRoll.webp",
     rating: 4.4,
     veg: true,
     popular: false,
@@ -60,8 +57,7 @@ export const menuItems: ProductItem[] = [
     description: "Made with homemade herbs. No MSG",
     price: 255,
     category: "combos",
-    image:
-      "https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?w=400&h=300&fit=crop",
+    image: "/menuItems/VegHakkaNoodleswithVegManchurianGravy.webp",
     rating: 4.7,
     veg: true,
     popular: false,
@@ -73,8 +69,7 @@ export const menuItems: ProductItem[] = [
     description: "Delicious item prepared freshly",
     price: 345,
     category: "combos",
-    image:
-      "https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?w=400&h=300&fit=crop",
+    image: "/menuItems/VegHakkaNoodles.webp",
     rating: 4.8,
     veg: false,
     popular: true,
@@ -86,8 +81,7 @@ export const menuItems: ProductItem[] = [
     description: "Long grain rice with fresh bell peppers",
     price: 255,
     category: "combos",
-    image:
-      "https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?w=400&h=300&fit=crop",
+    image: "/menuItems/",
     rating: 4.7,
     veg: true,
     popular: false,
@@ -99,8 +93,7 @@ export const menuItems: ProductItem[] = [
     description: "Delicious item prepared freshly",
     price: 345,
     category: "combos",
-    image:
-      "https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?w=400&h=300&fit=crop",
+    image: "/menuItems/SchezwanFriedRice.webp ",
     rating: 4.4,
     veg: false,
     popular: false,
@@ -112,8 +105,7 @@ export const menuItems: ProductItem[] = [
     description: "Four creamy kofta balls in tomato gravy with fresh cream",
     price: 250,
     category: "combos",
-    image:
-      "https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?w=400&h=300&fit=crop",
+    image: "/menuItems/",
     rating: 4.7,
     veg: true,
     popular: false,
@@ -125,8 +117,7 @@ export const menuItems: ProductItem[] = [
     description: "Makhani Gravy with chef's special masala",
     price: 295,
     category: "combos",
-    image:
-      "https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?w=400&h=300&fit=crop",
+    image: "/menuItems/",
     rating: 4.8,
     veg: true,
     popular: false,
@@ -139,8 +130,7 @@ export const menuItems: ProductItem[] = [
       "Roll made with fresh juicy paneer, red bell pepper, onion and a variety of sauces",
     price: 195,
     category: "rocking-rolls",
-    image:
-      "https://images.unsplash.com/photo-1606755962773-3b2f5c0e30e1?w=400&h=300&fit=crop",
+    image: "/menuItems/ChickenRoll.webp",
     rating: 4.8,
     veg: true,
     popular: true,
@@ -152,8 +142,7 @@ export const menuItems: ProductItem[] = [
     description: "Made with boneless chicken in variety of sauces",
     price: 200,
     category: "rocking-rolls",
-    image:
-      "https://images.unsplash.com/photo-1606755962773-3b2f5c0e30e1?w=400&h=300&fit=crop",
+    image: "/menuItems/ChickenRoll.webp",
     rating: 4.9,
     veg: false,
     popular: false,
@@ -165,8 +154,7 @@ export const menuItems: ProductItem[] = [
     description: "Made in Kolkata style",
     price: 165,
     category: "rocking-rolls",
-    image:
-      "https://images.unsplash.com/photo-1606755962773-3b2f5c0e30e1?w=400&h=300&fit=crop",
+    image: "/menuItems/ChickenRoll.webp",
     rating: 4.6,
     veg: false,
     popular: false,
@@ -178,8 +166,7 @@ export const menuItems: ProductItem[] = [
     description: "Cooked in onion, tomato and Indian spices",
     price: 250,
     category: "main-course",
-    image:
-      "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=400&h=300&fit=crop",
+    image: "/menuItems/ChickenCurry.webp",
     rating: 4.5,
     veg: false,
     popular: true,
@@ -191,8 +178,7 @@ export const menuItems: ProductItem[] = [
     description: "4 boiled eggs in curry of onion, tomato, and curd",
     price: 250,
     category: "main-course",
-    image:
-      "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=400&h=300&fit=crop",
+    image: "/menuItems/ChickenCurry.webp",
     rating: 4.7,
     veg: false,
     popular: false,
@@ -204,8 +190,7 @@ export const menuItems: ProductItem[] = [
     description: "Made with rice, moong dal, dahi and seasonal vegetables",
     price: 200,
     category: "main-course",
-    image:
-      "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=400&h=300&fit=crop",
+    image: "/menuItems/",
     rating: 4.6,
     veg: true,
     popular: true,
@@ -218,8 +203,7 @@ export const menuItems: ProductItem[] = [
       "4 big pieces of fish, Bengali-style cooked in curd and spices",
     price: 540,
     category: "main-course",
-    image:
-      "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=400&h=300&fit=crop",
+    image: "/menuItems/FishCurry.webp",
     rating: 4.9,
     veg: false,
     popular: false,
@@ -231,8 +215,7 @@ export const menuItems: ProductItem[] = [
     description: "Made with fresh vegetables and herbs. No MSG",
     price: 155,
     category: "chinese",
-    image:
-      "https://images.unsplash.com/photo-1589308078056-f207d4c06939?w=400&h=300&fit=crop",
+    image: "/menuItems/VegHalkaNoodles.webp",
     rating: 4.6,
     veg: true,
     popular: false,
@@ -244,8 +227,7 @@ export const menuItems: ProductItem[] = [
     description: "Delicious item prepared freshly",
     price: 250,
     category: "chinese",
-    image:
-      "https://images.unsplash.com/photo-1589308078056-f207d4c06939?w=400&h=300&fit=crop",
+    image: "/menuItems/VegHalkaNoodles.webp",
     rating: 4.9,
     veg: false,
     popular: true,
@@ -257,8 +239,7 @@ export const menuItems: ProductItem[] = [
     description: "Chef's special masala, Long Grain rice, fresh vegetables",
     price: 155,
     category: "chinese",
-    image:
-      "https://images.unsplash.com/photo-1589308078056-f207d4c06939?w=400&h=300&fit=crop",
+    image: "/menuItems/SchezwanFriedRice.webp",
     rating: 4.4,
     veg: true,
     popular: true,
@@ -270,8 +251,7 @@ export const menuItems: ProductItem[] = [
     description: "Delicious item prepared freshly",
     price: 250,
     category: "chinese",
-    image:
-      "https://images.unsplash.com/photo-1589308078056-f207d4c06939?w=400&h=300&fit=crop",
+    image: "/menuItems/SchezwanFriedRice.webp",
     rating: 4.8,
     veg: false,
     popular: false,
@@ -283,8 +263,7 @@ export const menuItems: ProductItem[] = [
     description: "Tangy and tasty gravy",
     price: 150,
     category: "chinese",
-    image:
-      "https://images.unsplash.com/photo-1589308078056-f207d4c06939?w=400&h=300&fit=crop",
+    image: "/menuItems/",
     rating: 4.7,
     veg: false,
     popular: false,
@@ -296,8 +275,7 @@ export const menuItems: ProductItem[] = [
     description: "Indian style fried fish with side vegetables",
     price: 485,
     category: "chinese",
-    image:
-      "https://images.unsplash.com/photo-1589308078056-f207d4c06939?w=400&h=300&fit=crop",
+    image: "/menuItems/FishFry.webp",
     rating: 4.7,
     veg: false,
     popular: false,
@@ -309,8 +287,7 @@ export const menuItems: ProductItem[] = [
     description: "Made in fresh curd with basmati rice / tawa roti",
     price: 140,
     category: "economy-meals",
-    image:
-      "https://images.unsplash.com/photo-1625225233840-6954560211cc?w=400&h=300&fit=crop",
+    image: "/menuItems/",
     rating: 4.8,
     veg: true,
     popular: true,
@@ -322,8 +299,7 @@ export const menuItems: ProductItem[] = [
     description: "Rajma or chole in special masala with juicy gravy",
     price: 140,
     category: "economy-meals",
-    image:
-      "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=400&h=300&fit=crop",
+    image: "/menuItems/",
     rating: 4.5,
     veg: true,
     popular: true,
@@ -335,8 +311,7 @@ export const menuItems: ProductItem[] = [
     description: "Traditional Dal Makhani with parathas or roti",
     price: 140,
     category: "economy-meals",
-    image:
-      "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&h=300&fit=crop",
+    image: "/menuItems/",
     rating: 4.4,
     veg: true,
     popular: false,
