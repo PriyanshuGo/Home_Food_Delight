@@ -1,11 +1,10 @@
 "use client";
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Plus, Star, Clock, Leaf } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { ImageWithFallback } from '@/components/figma/ImageWithFallback';
 import { menuItems } from '@/utils/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, updateQuantity, removeFromCart } from '@/redux/cartSlice';
@@ -13,15 +12,15 @@ import { ProductItem, Category } from '@/types/product'
 import { CartItem } from '@/types/product';
 import { RootState } from '@/redux/store';
 import { debounce } from "@/hooks/useDebounceHook";
+import Image from 'next/image';
+import MenuCard from '@/components/MenuCard';
 
 
 const MenuPage = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state: RootState) => state.cart.items);
-  const [filteredItems, setFilteredItems] = useState<ProductItem[]>([]);
-  const debouncedSearch = debounce((query: string) => {
-    handleSearch(query);
-  }, 1000);
+  const [filteredItems, setFilteredItems] = useState<ProductItem[]>(menuItems);
+
 
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
@@ -47,16 +46,25 @@ const MenuPage = () => {
   }
 
   const handleSearch = (query: string): void => {
-    const results = menuItems.filter((item: ProductItem) => item.name.toLowerCase().includes(query.toLowerCase()));
+    const trimmedQuery = query.trim();
+    const results = menuItems.filter((item: ProductItem) => item.name.toLowerCase().includes(trimmedQuery.toLowerCase()));
     setFilteredItems(results);
   }
+  const debouncedHandleSearch = useCallback(debounce(handleSearch, 500), []);
 
   useEffect(() => {
-    debouncedSearch(searchTerm);
-  }, [searchTerm])
+    if (searchTerm.trim()) {
+      debouncedHandleSearch(searchTerm);
+      setActiveCategory("");
+      console.log("Search term:", searchTerm);
+    }
+  }, [searchTerm]);
+
 
   useEffect(() => {
-    filterByCategory(activeCategory);
+    if (activeCategory !== "") {
+      filterByCategory(activeCategory);
+    }
   }, [activeCategory]);
 
   const handleAddToCart = (item: ProductItem): void => {
@@ -91,10 +99,11 @@ const MenuPage = () => {
               <Input
                 placeholder="Search for dishes..."
                 value={searchTerm}
-                onChange={(e) => { setSearchTerm(e.target.value.trim()) }}
+                onChange={(e) => { setSearchTerm(e.target.value) }}
                 onClick={() => {
                   if (searchTerm) {
-                    debounce(handleSearch, 1000)(searchTerm);
+                    handleSearch(searchTerm);
+                    setActiveCategory("");
                   }
                 }}
                 className="w-full"
@@ -126,104 +135,14 @@ const MenuPage = () => {
               const cartItem = cartItems.find((ci: CartItem) => ci.id === item.id);
               const quantity = cartItem ? cartItem.quantity : 0;
               return (
-                <Card
+                <MenuCard
                   key={item.id}
-                  className="overflow-hidden hover:shadow-warm-lg transition-all duration-300 border-0 bg-white flex flex-col justify-between"
-                >
-                  {/* Image Section */}
-                  <div className="relative">
-                    <div className="aspect-[4/3] overflow-hidden">
-                      <ImageWithFallback
-                        src={item.image}
-                        alt={item.name}
-                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                      />
-                    </div>
-
-                    {/* Badges */}
-                    <div className="absolute top-3 left-3 flex flex-col gap-2">
-                      {item.popular && (
-                        <Badge className="bg-saffron text-white">
-                          <Star className="h-3 w-3 mr-1" />
-                          Popular
-                        </Badge>
-                      )}
-                      {item.veg && (
-                        <Badge variant="secondary" className="bg-green-100 text-green-800">
-                          <Leaf className="h-3 w-3 mr-1" />
-                          Veg
-                        </Badge>
-                      )}
-                    </div>
-
-                    {/* Rating */}
-                    <div className="absolute top-3 right-3 bg-white/90 px-2 py-1 rounded-full">
-                      <div className="flex items-center space-x-1">
-                        <Star className="h-3 w-3 text-saffron fill-current" />
-                        <span className="text-xs font-medium">{item.rating}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Card Header */}
-                  <CardHeader>
-                    <CardTitle className="text-lg text-brown">{item.name}</CardTitle>
-                    <CardDescription className="text-sm text-gray-600">
-                      {item.description}
-                    </CardDescription>
-                  </CardHeader>
-
-                  {/* Card Content */}
-                  <CardContent>
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="text-xl font-bold text-saffron">₹{item.price}</span>
-                      <div className="flex items-center space-x-1 text-xs text-gray-500">
-                        <Clock className="h-3 w-3" />
-                        <span>{item.preparationTime}</span>
-                      </div>
-                    </div>
-
-                    {quantity > 0 ? (
-                      <div className='flex items-center justify-between'>
-                        <div>
-                          <Button
-                            variant="default"
-                            className="bg-saffron hover:bg-saffron-dark text-white"
-                            onClick={() => handleUpdateQuantity(item.id, quantity - 1)}
-                          >
-                            -
-                          </Button>
-                          <span className="mx-2">{quantity}</span>
-                          <Button
-                            variant="default"
-                            className="bg-saffron hover:bg-saffron-dark text-white"
-                            onClick={() => handleUpdateQuantity(item.id, quantity + 1)}
-                          >
-                            +
-                          </Button>
-                        </div>
-                        <Button
-                          variant="default"
-                          className="bg-saffron hover:bg-saffron-dark text-white"
-                          onClick={() => handleRemoveFromCart(item.id)}
-                        >
-                          Remove from Cart
-                        </Button>
-                      </div>
-                    ) : (
-                      <Button
-                        size="sm"
-
-                        className="w-full bg-saffron hover:bg-saffron-dark text-white"
-                        onClick={() => handleAddToCart(item)}
-                      >
-                        <Plus className="h-4 w-4 mr-2" />
-
-                        Add to Cart
-                      </Button>
-                    )}
-                  </CardContent>
-                </Card>
+                  item={item}
+                  quantity={quantity}
+                  onAddToCart={handleAddToCart}
+                  onUpdateQuantity={handleUpdateQuantity}
+                  onRemoveFromCart={handleRemoveFromCart}
+                />
               )
             })}
           </div>
