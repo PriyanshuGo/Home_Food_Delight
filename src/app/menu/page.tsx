@@ -19,6 +19,7 @@ const MenuPage = () => {
   const [filteredItems, setFilteredItems] = useState<ProductItem[]>(menuItems);
 
 
+
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   const categories: Category[] = [
@@ -55,7 +56,9 @@ const MenuPage = () => {
 
 
   useEffect(() => {
-    filterByCategory(activeCategory);
+    if (activeCategory !== "") {
+      filterByCategory(activeCategory);
+    }
   }, [activeCategory]);
 
   const handleAddToCart = (item: ProductItem): void => {
@@ -92,9 +95,7 @@ const MenuPage = () => {
                 value={searchTerm}
                 onChange={(e) => { setSearchTerm(e.target.value) }}
                 onClick={() => {
-                  if (searchTerm) {
-                    handleSearch(searchTerm);
-                  }
+                  handleSearch(searchTerm);
                 }}
                 className="w-full"
               />
@@ -104,7 +105,7 @@ const MenuPage = () => {
                   className="absolute right-2 top-1/2 transform -translate-y-1/2 text-saffron hover:text-saffron-dark transition-colors duration-200 text-lg font-bold"
                   aria-label="Clear search"
                 >
-                  <X className="w-4 h-4" /> 
+                  <X className="w-4 h-4" />
                 </button>)}
             </div>
 
