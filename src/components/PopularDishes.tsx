@@ -4,8 +4,8 @@ import { ArrowRight, Star } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
-import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 
 function PopularDishes() {
@@ -17,7 +17,7 @@ function PopularDishes() {
             name: 'Rajma Chawal',
             description: 'Traditional kidney bean curry served with steamed basmati rice',
             price: 120,
-            image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&h=300&fit=crop',
+            image: '/menuItems/FishFry.webp',
             rating: 4.8,
             popular: true
         },
@@ -26,7 +26,7 @@ function PopularDishes() {
             name: 'Dal Tadka Thali',
             description: 'Yellow lentil curry with roti, rice, pickle, and salad',
             price: 100,
-            image: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=400&h=300&fit=crop',
+            image: '/menuItems/FishFry.webp',
             rating: 4.7,
             popular: true
         },
@@ -35,7 +35,7 @@ function PopularDishes() {
             name: 'Chole Bhature',
             description: 'Spiced chickpea curry served with fluffy deep-fried bread',
             price: 140,
-            image: 'https://images.unsplash.com/photo-1626132647523-66ef2732c4d3?w=400&h=300&fit=crop',
+            image: '/menuItems/FishFry.webp',
             rating: 4.9,
             popular: true
         },
@@ -44,7 +44,7 @@ function PopularDishes() {
             name: 'Paneer Butter Masala',
             description: 'Creamy cottage cheese curry with naan and rice',
             price: 160,
-            image: 'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=400&h=300&fit=crop',
+            image: '/menuItems/FishFry.webp',
             rating: 4.8,
             popular: true
         }
@@ -67,9 +67,11 @@ function PopularDishes() {
                             <Card key={dish.id} className="overflow-hidden hover:shadow-warm-lg transition-all duration-300 border-0 bg-white">
                                 <div className="relative">
                                     <div className="aspect-[4/3] overflow-hidden">
-                                        <ImageWithFallback
+                                        <Image
                                             src={dish.image}
                                             alt={dish.name}
+                                            width={400}
+                                            height={300}
                                             className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                                         />
                                     </div>

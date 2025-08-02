@@ -32,7 +32,7 @@ export default function Navigation() {
           {/* Logo */}
           <div className="flex items-center space-x-3 cursor-pointer">
             <div className="w-10 h-10 bg-gradient-warm rounded-full flex items-center justify-center">
-              <Image src="/logo.jpg" alt="Logo" width={10} height={10} className="rounded-full" />
+              <Image src="/logo.jpg" alt="Logo" width={40} height={40} className="rounded-full" />
             </div>
             <div>
               <h1 className="text-lg font-bold text-brown">Home Food Delight</h1>
