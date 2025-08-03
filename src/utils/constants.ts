@@ -1,5 +1,6 @@
 import { MessageSquare, ChefHat } from "lucide-react";
-import { ProductItem } from "@/types/product";
+import { ProductItem, Category } from '@/types/product'
+
 export const menuItems: ProductItem[] = [
   {
     id: "47c53ef1",
@@ -343,3 +344,13 @@ export const processSteps = [
     color: "bg-saffron-dark",
   },
 ];
+
+export const categories: Category[] = [
+    { id: 'all', name: 'All Items', icon: '🍽️' },                    // General dining
+    { id: 'combos', name: 'COMBOS', icon: '🍱' },                    // Bento box (combo meals)
+    { id: 'rocking-rolls', name: `ROCKING ROLLS`, icon: '🌯' },      // Burrito/Wrap (rolls)
+    { id: 'main-course', name: `MAIN COURSE`, icon: '🍛' },          // Curry rice plate
+    { id: 'chinese', name: `CHINESE`, icon: '🥢' },                  // Chopsticks
+    { id: 'chefs-special', name: `CHEF'S SPECIAL`, icon: '👨‍🍳' },     // Chef hat icon
+    { id: 'economy-meals', name: `ECONOMY MEALS`, icon: '💰' },      // Money bag for budget meals
+  ];

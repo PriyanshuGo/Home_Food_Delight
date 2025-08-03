@@ -1,36 +1,23 @@
 "use client";
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { X } from 'lucide-react';
+import { useState, useEffect, useRef, useMemo } from 'react';
+import { ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { menuItems } from '@/utils/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, updateQuantity, removeFromCart } from '@/redux/cartSlice';
-import { ProductItem, Category } from '@/types/product'
-import { CartItem } from '@/types/product';
+import { ProductItem, CartItem } from '@/types/product'
 import { RootState } from '@/redux/store';
-import { debounce } from "@/hooks/useDebounceHook";
-import MenuCard from '@/components/MenuCard';
-
+import MenuCard from '@/app/menu/MenuCard';
+import SearchHandle from './SearchHandle';
+import CategoryFilter from './CategoryFilter';
 
 const MenuPage = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const [filteredItems, setFilteredItems] = useState<ProductItem[]>(menuItems);
-
-
-
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
-  const categories: Category[] = [
-    { id: 'all', name: 'All Items', icon: '🍽️' },                    // General dining
-    { id: 'combos', name: 'COMBOS', icon: '🍱' },                    // Bento box (combo meals)
-    { id: 'rocking-rolls', name: `ROCKING ROLLS`, icon: '🌯' },      // Burrito/Wrap (rolls)
-    { id: 'main-course', name: `MAIN COURSE`, icon: '🍛' },          // Curry rice plate
-    { id: 'chinese', name: `CHINESE`, icon: '🥢' },                  // Chopsticks
-    { id: 'chefs-special', name: `CHEF'S SPECIAL`, icon: '👨‍🍳' },     // Chef hat icon
-    { id: 'economy-meals', name: `ECONOMY MEALS`, icon: '💰' },      // Money bag for budget meals
-  ];
+  const resultRef = useRef<HTMLDivElement | null>(null);
 
   const filterByCategory = (category: string): void => {
     const results: ProductItem[] = menuItems.filter((item: ProductItem) => {
@@ -40,20 +27,21 @@ const MenuPage = () => {
         return item.category === category
       }
     });
+    setSearchTerm('');
     setFilteredItems(results);
   }
 
   const handleSearch = (query: string): void => {
-    const trimmedQuery = query.trim();
-    const results = menuItems.filter((item: ProductItem) => item.name.toLowerCase().includes(trimmedQuery.toLowerCase()));
+    const trimmedQuery = query.trim().toLowerCase();
+    const results = menuItems.filter((item: ProductItem) => {
+      return (
+        item.name.toLowerCase().includes(trimmedQuery) ||
+        item.description?.toLowerCase().includes(trimmedQuery) ||
+        item.category.toLowerCase().includes(trimmedQuery)
+      );
+    });
     setFilteredItems(results);
   }
-  const debouncedHandleSearch = useCallback(debounce(handleSearch, 500), []);
-
-  useEffect(() => {
-    debouncedHandleSearch(searchTerm);
-  }, [searchTerm]);
-
 
   useEffect(() => {
     if (activeCategory !== "") {
@@ -72,6 +60,7 @@ const MenuPage = () => {
     dispatch(removeFromCart(id));
   };
 
+
   return (
     <div>
       <div className="min-h-screen bg-warm-white py-8">
@@ -89,47 +78,20 @@ const MenuPage = () => {
 
           {/* Search and Category Filter Section */}
           <div className="mb-8 space-y-4">
-            <div className="max-w-md mx-auto relative">
-              <Input
-                placeholder="Search for dishes..."
-                value={searchTerm}
-                onChange={(e) => { setSearchTerm(e.target.value) }}
-                onClick={() => {
-                  handleSearch(searchTerm);
-                }}
-                className="w-full"
-              />
-              {searchTerm && (
-                <button
-                  onClick={() => setSearchTerm("")}
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-saffron hover:text-saffron-dark transition-colors duration-200 text-lg font-bold"
-                  aria-label="Clear search"
-                >
-                  <X className="w-4 h-4" />
-                </button>)}
-            </div>
+            <SearchHandle
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+              handleSearch={handleSearch}
+            />
 
-            <div className="flex flex-wrap justify-center gap-2">
-              {categories.map((category: Category) => (
-                <Button
-                  key={category.id}
-                  variant={activeCategory === category.id ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => setActiveCategory(category.id)}
-                  className={`flex items-center space-x-2 ${activeCategory === category.id
-                    ? 'bg-saffron hover:bg-saffron-dark text-white'
-                    : 'border-saffron text-saffron hover:bg-saffron hover:text-white'
-                    }`}                >
-                  <span>{category.icon}</span>
-                  <span>{category.name}</span>
-                </Button>
-              ))}
-            </div>
+            <CategoryFilter
+              activeCategory={activeCategory}
+              setActiveCategory={setActiveCategory}
+            />
           </div>
 
-          {/* Menu Items Grid */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 mb-8">
-
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 mb-8"
+            ref={resultRef}>
             {filteredItems.map((item: ProductItem) => {
               const cartItem = cartItems.find((ci: CartItem) => ci.id === item.id);
               const quantity = cartItem ? cartItem.quantity : 0;
@@ -156,18 +118,17 @@ const MenuPage = () => {
           )}
 
           {/* Floating Cart Button */}
-          {/* {cartItems.length > 0 && (
-          <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-30">
-            <Button
-              size="lg"
-              className="bg-saffron hover:bg-saffron-dark text-white px-6 py-3 rounded-full shadow-warm-lg"
-              onClick={() => setShowOrderModal(true)}
-            >
-              <ShoppingCart className="h-5 w-5 mr-2" />
-              View Cart ({} items)
-            </Button>
-          </div>
-        )} */}
+          {cartItems.length > 0 && (
+            <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-30">
+              <Button
+                size="lg"
+                className="bg-saffron hover:bg-saffron-dark text-white px-6 py-3 rounded-full shadow-warm-lg"
+              >
+                <ShoppingCart className="h-5 w-5 mr-2" />
+                View Cart ({cartItems.length} items)
+              </Button>
+            </div>
+          )}
 
         </div>
       </div>

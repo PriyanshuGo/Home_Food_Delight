@@ -136,6 +136,22 @@
   --color-brown-footer: var(--brown-footer);
   --color-light-brown: var(--light-brown);
 }
+.custom-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+.custom-scroll::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+}
+.custom-scroll::-webkit-scrollbar-thumb {
+  background-color: #f4a261;
+  border-radius: 4px;
+}
+
+.custom-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #f4a261 rgba(0, 0, 0, 0.05);
+}
+
 
 @layer base {
   * {
