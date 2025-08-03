@@ -1,42 +1,61 @@
 "use client";
-import { useState, useRef, useMemo } from 'react';
+import { useState, useMemo, useRef } from 'react';
+import { useCombobox } from 'downshift';
 import { Input } from '@/components/ui/input';
 import { X, Search } from 'lucide-react';
 import { menuItems } from '@/utils/constants';
 import Fuse from 'fuse.js';
-
+import { ProductItem } from '@/types/product';
 
 interface SearchHandleProps {
-    searchTerm: string;
     setSearchTerm: (value: string) => void;
     handleSearch: (query: string) => void;
 }
 
-function SearchHandle({ searchTerm, setSearchTerm, handleSearch }: SearchHandleProps) {
+function SearchHandle({ setSearchTerm, handleSearch }: SearchHandleProps) {
+    const [inputValue, setInputValue] = useState('');
     const [isSearching, setIsSearching] = useState(false);
-    const [highlightedIndex, setHighlightedIndex] = useState(-1);
-    const [showSuggestions, setShowSuggestions] = useState(false);
     const resultRef = useRef<HTMLDivElement | null>(null);
 
-    const fuse = new Fuse(menuItems, {
+    const fuse = useMemo(() => new Fuse<ProductItem>(menuItems, {
         keys: ['name', 'description', 'category'],
-        threshold: 0.4, // fuzzy match sensitivity
+        threshold: 0.4,
+    }), []);
+
+    const filteredItems = useMemo(() => {
+        if (!inputValue.trim()) return [];
+        return fuse.search(inputValue).map(res => res.item).slice(0, 5);
+    }, [inputValue]);
+
+    const {
+        isOpen,
+        getMenuProps,
+        getInputProps,
+        getItemProps,
+        highlightedIndex,
+    } = useCombobox<ProductItem>({
+        items: filteredItems,
+        inputValue,
+        onInputValueChange: ({ inputValue }) => {
+            setInputValue(inputValue ?? '');
+        },
+        onSelectedItemChange: ({ selectedItem }) => {
+            if (selectedItem) {
+                setInputValue(selectedItem.name);
+                setSearchTerm(selectedItem.name);
+                handleSearch(selectedItem.name);
+            }
+        },
+        itemToString: (item) => (item ? item.name : ''),
     });
-
-    const filteredSuggestions = useMemo(() => {
-        if (!searchTerm) return [];
-        return fuse.search(searchTerm).map((result) => result.item);
-    }, [searchTerm]);
-
-
 
     const handleSubmitSearch = (e: React.FormEvent) => {
         e.preventDefault();
-        setSearchTerm("");
+        setSearchTerm(inputValue);
+        handleSearch(inputValue);
         setIsSearching(true);
-        setShowSuggestions(false);
-        handleSearch(searchTerm);
         setTimeout(() => setIsSearching(false), 300);
+
         if (typeof window !== 'undefined' && window.innerWidth <= 768) {
             setTimeout(() => {
                 resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -46,77 +65,55 @@ function SearchHandle({ searchTerm, setSearchTerm, handleSearch }: SearchHandleP
 
     return (
         <div className="max-w-md mx-auto relative">
-            <form action="" onSubmit={handleSubmitSearch}>
+            <form onSubmit={handleSubmitSearch}>
                 <Input
-                    placeholder="Search for dishes..."
-                    className="w-full"
-                    value={searchTerm}
-                    onChange={(e) => {
-                        setSearchTerm(e.target.value);
-                        setShowSuggestions(e.target.value.trim().length > 0);
-                        setHighlightedIndex(-1); // reset selection
-                    }}
-                    onKeyDown={(e) => {
-                        if (!showSuggestions) return;
-
-                        if (e.key === 'ArrowDown') {
-                            e.preventDefault();
-                            setHighlightedIndex((prev) =>
-                                prev === filteredSuggestions.length - 1 || filteredSuggestions.length === 0
-                                    ? 0
-                                    : prev + 1
-                            );
-                        } else if (e.key === 'ArrowUp') {
-                            e.preventDefault();
-                            setHighlightedIndex((prev) =>
-                                prev <= 0 ? filteredSuggestions.length - 1 : prev - 1
-                            );
-                        } else if (e.key === 'Enter') {
-                            if (highlightedIndex >= 0 && filteredSuggestions[highlightedIndex]) {
-                                e.preventDefault();
-                                const selected = filteredSuggestions[highlightedIndex];
-                                setSearchTerm(selected.name);
-                                handleSearch(selected.name);
-                                setShowSuggestions(false);
+                    {...getInputProps({
+                        placeholder: 'Search for dishes...',
+                        onFocus: () => { },
+                        className: 'w-full',
+                        onKeyDown: (e) => {
+                            if (e.key === 'Enter') {
+                                e.preventDefault(); // prevent Downshift from handling it
+                                handleSubmitSearch(e as unknown as React.FormEvent); // manually trigger submit
                             }
-                        } else if (e.key === 'Escape') {
-                            setShowSuggestions(false);
-                        }
-                    }}
-
-
+                        },
+                    })}
                 />
 
-                {searchTerm && showSuggestions && (
-                    <ul className="absolute w-full bg-white border mt-1 rounded-md shadow z-10 max-h-48 overflow-y-auto scrollbar-thin scrollbar-thumb-saffron scrollbar-track-gray-100">
-                        {filteredSuggestions.slice(0, 5).map((item, index) => (
-                            <li
-                                key={item.id}
-                                className={`px-4 py-2 cursor-pointer ${index === highlightedIndex
-                                    ? 'bg-saffron text-white'
-                                    : 'hover:bg-saffron hover:text-white'
-                                    }`}
-                                ref={(el) => {
-                                    if (index === highlightedIndex && el) {
-                                        el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-                                    }
-                                }}
-                                onMouseDown={(e) => {
-                                    e.preventDefault();
-                                    setSearchTerm(item.name);
-                                    handleSearch(item.name);
-                                    setShowSuggestions(false);
-                                }}
-                            >
-                                {item.name}
 
-                            </li>
-                        ))}
-
+                {inputValue && isOpen && (
+                    <ul
+                        {...getMenuProps({}, { suppressRefError: true })}
+                        className={`absolute w-full bg-white border mt-1 rounded-md shadow z-10 max-h-60 overflow-y-auto custom-scroll ${inputValue && isOpen ? '' : 'hidden'
+                            }`}
+                    >
+                        {(inputValue && isOpen) &&
+                            filteredItems.map((item, index) => (
+                                <li
+                                    key={item.id}
+                                    {...getItemProps({ item, index })}
+                                    className={`px-4 py-2 cursor-pointer flex items-start gap-2 ${index === highlightedIndex
+                                        ? 'bg-saffron text-white'
+                                        : 'hover:bg-saffron hover:text-white'
+                                        }`}
+                                >
+                                    <img
+                                        src={item.image}
+                                        alt={item.name}
+                                        className="w-10 h-10 object-cover rounded"
+                                    />
+                                    <div>
+                                        <p className="font-medium">{item.name}</p>
+                                        <p className="text-xs opacity-80">{item.description}</p>
+                                        <p className="text-xs mt-1">₹{item.price} · {item.category}</p>
+                                    </div>
+                                </li>
+                            ))}
                     </ul>
+
                 )}
 
-                {searchTerm && (
+                {inputValue && (
                     <div>
                         <button
                             type="submit"
@@ -126,7 +123,11 @@ function SearchHandle({ searchTerm, setSearchTerm, handleSearch }: SearchHandleP
                             <Search className="w-4 h-4" />
                         </button>
                         <button
-                            onClick={() => setSearchTerm("")}
+                            type="button"
+                            onClick={() => {
+                                setInputValue('');
+                                setSearchTerm('');
+                            }}
                             className="absolute right-2 top-1/2 transform -translate-y-1/2 text-saffron hover:text-saffron-dark transition-colors duration-200 text-lg font-bold sm:hidden"
                             aria-label="Clear search"
                         >
@@ -134,29 +135,18 @@ function SearchHandle({ searchTerm, setSearchTerm, handleSearch }: SearchHandleP
                         </button>
                     </div>
                 )}
+
                 {isSearching && (
                     <div className="absolute right-10 top-1/2 transform -translate-y-1/2 text-gray-400 animate-spin sm:hidden">
                         <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none">
-                            <circle
-                                className="opacity-25"
-                                cx="12"
-                                cy="12"
-                                r="10"
-                                stroke="currentColor"
-                                strokeWidth="4"
-                            ></circle>
-                            <path
-                                className="opacity-75"
-                                fill="currentColor"
-                                d="M4 12a8 8 0 018-8v8H4z"
-                            ></path>
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
                         </svg>
                     </div>
                 )}
             </form>
-
         </div>
-    )
+    );
 }
 
-export default SearchHandle
+export default SearchHandle;

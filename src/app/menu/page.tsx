@@ -79,7 +79,6 @@ const MenuPage = () => {
           {/* Search and Category Filter Section */}
           <div className="mb-8 space-y-4">
             <SearchHandle
-              searchTerm={searchTerm}
               setSearchTerm={setSearchTerm}
               handleSearch={handleSearch}
             />
