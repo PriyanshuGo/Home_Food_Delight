@@ -23,7 +23,7 @@ function SearchHandle({ handleSearch }: SearchHandleProps) {
     }), []);
 
     const filteredItems = useMemo(() => {
-        if (!inputValue.trim()) return [];
+        if (!inputValue) return [];
         return fuse.search(inputValue).map(res => res.item).slice(0, 5);
     }, [inputValue]);
 
