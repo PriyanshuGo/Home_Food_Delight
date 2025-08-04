@@ -10,6 +10,8 @@ import { RootState } from '@/redux/store';
 import MenuCard from '@/app/menu/MenuCard';
 import SearchHandle from './SearchHandle';
 import CategoryFilter from './CategoryFilter';
+import Fuse from 'fuse.js';
+
 
 const MenuPage = () => {
   const dispatch = useDispatch();
@@ -29,17 +31,20 @@ const MenuPage = () => {
     setFilteredItems(results);
   }
 
+  const fuse = useMemo(() => new Fuse(menuItems, {
+    keys: ['name', 'description', 'category'],
+    threshold: 0.4,             // how fuzzy the match is
+    ignoreLocation: true,       // matches anywhere in the string
+    useExtendedSearch: true     // enables "exact word" or combined search features
+  }), []);
+
+
   const handleSearch = (query: string): void => {
-    const trimmedQuery = query.trim().toLowerCase();
-    const results = menuItems.filter((item: ProductItem) => {
-      return (
-        item.name.toLowerCase().includes(trimmedQuery) ||
-        item.description?.toLowerCase().includes(trimmedQuery) ||
-        item.category.toLowerCase().includes(trimmedQuery)
-      );
-    });
-    setFilteredItems(results);
-  }
+    if (!query) {
+      const results = fuse.search(query).map(res => res.item);
+      setFilteredItems(menuItems);
+    }
+  };
 
   useEffect(() => {
     if (activeCategory !== "") {
