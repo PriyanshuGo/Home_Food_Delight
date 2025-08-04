@@ -41,9 +41,15 @@ const MenuPage = () => {
 
   const handleSearch = (query: string): void => {
     const trimmedQuery = query.trim();
-    if (trimmedQuery ) {
+    if (trimmedQuery) {
       const results = fuse.search(trimmedQuery).map(res => res.item);
       setFilteredItems(results);
+    }
+
+    if (typeof window !== 'undefined' && window.innerWidth <= 768) {
+      setTimeout(() => {
+        resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
     }
   };
 
