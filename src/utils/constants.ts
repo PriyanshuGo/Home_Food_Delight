@@ -1,56 +1,7 @@
 import { MessageSquare, ChefHat } from "lucide-react";
-import { ProductItem } from "@/types/product";
+import { ProductItem, Category } from '@/types/product'
+
 export const menuItems: ProductItem[] = [
-  {
-    id: "47c53ef1",
-    name: "Aloo Paratha with Raita",
-    description: "Made with Desi Ghee + Freshly Mint Curd",
-    price: 165,
-    category: "chefs-special",
-    image: "/menuItems/AlooParathawithRaita.webp",
-    rating: 4.8,
-    veg: true,
-    popular: true,
-    preparationTime: "35 mins",
-  },
-  {
-    id: "32e206a1",
-    name: "Batata Kandha Poha",
-    description: "Made with potato and onion and coriander leaves",
-    price: 120,
-    category: "chefs-special",
-    image: "/menuItems/BatataKandhaPoha.webp",
-    rating: 4.9,
-    veg: true,
-    popular: false,
-    preparationTime: "35 mins",
-  },
-  {
-    id: "46e83da6",
-    name: "Pav Bhaji",
-    description:
-      "2 bhaji pav in butter + mashed veg made in fresh tomato puree",
-    price: 175,
-    category: "chefs-special",
-    image: "/menuItems/PavBhaji.webp",
-    rating: 4.5,
-    veg: true,
-    popular: false,
-    preparationTime: "25 mins",
-  },
-  {
-    id: "1122f00f",
-    name: "Paneer Lajawab Roll (Also in Rocking Rolls)",
-    description:
-      "Roll made with fresh juicy paneer, red bell pepper, onion and a variety of sauces",
-    price: 195,
-    category: "chefs-special",
-    image: "/menuItems/ChickenRoll.webp",
-    rating: 4.4,
-    veg: true,
-    popular: false,
-    preparationTime: "20 mins",
-  },
   {
     id: "95d583c6",
     name: "Veg Hakka Noodles with Veg Manchurian Gravy",
@@ -343,3 +294,12 @@ export const processSteps = [
     color: "bg-saffron-dark",
   },
 ];
+
+export const categories: Category[] = [
+    { id: 'all', name: 'All Items', icon: '🍽️' },                    // General dining
+    { id: 'rocking-rolls', name: `ROCKING ROLLS`, icon: '🌯' },      // Burrito/Wrap (rolls)
+    { id: 'combos', name: 'COMBOS', icon: '🍱' },                    // Bento box (combo meals)
+    { id: 'chinese', name: `CHINESE`, icon: '🥢' },                  // Chopsticks
+    { id: 'main-course', name: `MAIN COURSE`, icon: '🍛' },          // Curry rice plate
+    { id: 'economy-meals', name: `ECONOMY MEALS`, icon: '💰' },      // Money bag for budget meals
+  ];

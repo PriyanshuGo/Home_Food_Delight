@@ -136,6 +136,27 @@
   --color-brown-footer: var(--brown-footer);
   --color-light-brown: var(--light-brown);
 }
+/* globals.css */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #f4a261 rgba(0, 0, 0, 0.05);
+}
+
+/* WebKit (Chrome, Edge, Safari) */
+*::-webkit-scrollbar {
+  width: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #f4a261;
+  border-radius: 4px;
+}
+
+
 
 @layer base {
   * {
