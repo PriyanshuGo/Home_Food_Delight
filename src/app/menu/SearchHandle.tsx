@@ -6,13 +6,13 @@ import { X, Search } from 'lucide-react';
 import { menuItems } from '@/utils/constants';
 import Fuse from 'fuse.js';
 import { ProductItem } from '@/types/product';
+import Image from 'next/image';
 
 interface SearchHandleProps {
-    setSearchTerm: (value: string) => void;
     handleSearch: (query: string) => void;
 }
 
-function SearchHandle({ setSearchTerm, handleSearch }: SearchHandleProps) {
+function SearchHandle({ handleSearch }: SearchHandleProps) {
     const [inputValue, setInputValue] = useState('');
     const [isSearching, setIsSearching] = useState(false);
     const resultRef = useRef<HTMLDivElement | null>(null);
@@ -42,7 +42,6 @@ function SearchHandle({ setSearchTerm, handleSearch }: SearchHandleProps) {
         onSelectedItemChange: ({ selectedItem }) => {
             if (selectedItem) {
                 setInputValue(selectedItem.name);
-                setSearchTerm(selectedItem.name);
                 handleSearch(selectedItem.name);
             }
         },
@@ -51,7 +50,6 @@ function SearchHandle({ setSearchTerm, handleSearch }: SearchHandleProps) {
 
     const handleSubmitSearch = (e: React.FormEvent) => {
         e.preventDefault();
-        setSearchTerm(inputValue);
         handleSearch(inputValue);
         setIsSearching(true);
         setTimeout(() => setIsSearching(false), 300);
@@ -81,37 +79,37 @@ function SearchHandle({ setSearchTerm, handleSearch }: SearchHandleProps) {
                 />
 
 
-                {inputValue && isOpen && (
-                    <ul
-                        {...getMenuProps({}, { suppressRefError: true })}
-                        className={`absolute w-full bg-white border mt-1 rounded-md shadow z-10 max-h-60 overflow-y-auto custom-scroll ${inputValue && isOpen ? '' : 'hidden'
-                            }`}
-                    >
-                        {(inputValue && isOpen) &&
-                            filteredItems.map((item, index) => (
-                                <li
-                                    key={item.id}
-                                    {...getItemProps({ item, index })}
-                                    className={`px-4 py-2 cursor-pointer flex items-start gap-2 ${index === highlightedIndex
-                                        ? 'bg-saffron text-white'
-                                        : 'hover:bg-saffron hover:text-white'
-                                        }`}
-                                >
-                                    <img
-                                        src={item.image}
-                                        alt={item.name}
-                                        className="w-10 h-10 object-cover rounded"
-                                    />
-                                    <div>
-                                        <p className="font-medium">{item.name}</p>
-                                        <p className="text-xs opacity-80">{item.description}</p>
-                                        <p className="text-xs mt-1">₹{item.price} · {item.category}</p>
-                                    </div>
-                                </li>
-                            ))}
-                    </ul>
+                <ul
+                    {...getMenuProps({}, { suppressRefError: true })}
+                    className={`absolute w-full bg-white border mt-1 rounded-md shadow z-10 max-h-60 overflow-y-auto ${inputValue && isOpen ? '' : 'hidden'
+                        }`}
+                >
+                    {(inputValue && isOpen) &&
+                        filteredItems.map((item, index) => (
+                            <li
+                                key={item.id}
+                                {...getItemProps({ item, index })}
+                                className={`px-4 py-2 cursor-pointer flex items-start gap-2 ${index === highlightedIndex
+                                    ? 'bg-saffron text-white'
+                                    : 'hover:bg-saffron hover:text-white'
+                                    }`}
+                            >
+                                <Image
+                                    src={item.image}
+                                    alt={"img"}
+                                    width={40}
+                                    height={40}
+                                    className="object-cover rounded"
+                                />
+                                <div>
+                                    <p className="font-medium">{item.name}</p>
+                                    <p className="text-xs opacity-80">{item.description}</p>
+                                    <p className="text-xs mt-1">₹{item.price} · {item.category}</p>
+                                </div>
+                            </li>
+                        ))}
+                </ul>
 
-                )}
 
                 {inputValue && (
                     <div>
@@ -126,7 +124,6 @@ function SearchHandle({ setSearchTerm, handleSearch }: SearchHandleProps) {
                             type="button"
                             onClick={() => {
                                 setInputValue('');
-                                setSearchTerm('');
                             }}
                             className="absolute right-2 top-1/2 transform -translate-y-1/2 text-saffron hover:text-saffron-dark transition-colors duration-200 text-lg font-bold sm:hidden"
                             aria-label="Clear search"

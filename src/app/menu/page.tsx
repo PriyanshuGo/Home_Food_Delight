@@ -16,7 +16,6 @@ const MenuPage = () => {
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const [filteredItems, setFilteredItems] = useState<ProductItem[]>(menuItems);
   const [activeCategory, setActiveCategory] = useState('all');
-  const [searchTerm, setSearchTerm] = useState('');
   const resultRef = useRef<HTMLDivElement | null>(null);
 
   const filterByCategory = (category: string): void => {
@@ -27,7 +26,6 @@ const MenuPage = () => {
         return item.category === category
       }
     });
-    setSearchTerm('');
     setFilteredItems(results);
   }
 
@@ -79,7 +77,6 @@ const MenuPage = () => {
           {/* Search and Category Filter Section */}
           <div className="mb-8 space-y-4">
             <SearchHandle
-              setSearchTerm={setSearchTerm}
               handleSearch={handleSearch}
             />
 

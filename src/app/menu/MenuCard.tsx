@@ -16,10 +16,10 @@ interface MenuCardProps {
 
 function MenuCard ({ item, quantity, onAddToCart, onUpdateQuantity, onRemoveFromCart, }: MenuCardProps) {
     return (
-        <div>
+        <div className='h-full'>
             <Card
                 key={item.id}
-                className="overflow-hidden hover:shadow-warm-lg transition-all duration-300 border-0 bg-white flex flex-col justify-between"
+                className="overflow-hidden hover:shadow-warm-lg transition-all duration-300 border-0 bg-white h-full flex flex-col "
             >
                 {/* Image Section */}
                 <div className="relative">
@@ -60,8 +60,8 @@ function MenuCard ({ item, quantity, onAddToCart, onUpdateQuantity, onRemoveFrom
 
                 {/* Card Header */}
                 <CardHeader>
-                    <CardTitle className="text-lg text-brown">{item.name}</CardTitle>
-                    <CardDescription className="text-sm text-gray-600">
+                    <CardTitle className="text-lg text-brown leading-tight">{item.name}</CardTitle>
+                    <CardDescription className="text-sm text-gray-600 ">
                         {item.description}
                     </CardDescription>
                 </CardHeader>
