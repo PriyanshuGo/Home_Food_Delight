@@ -42,7 +42,7 @@ const MenuPage = () => {
   const handleSearch = (query: string): void => {
     const trimmedQuery = query.trim();
     if (trimmedQuery ) {
-      const results = fuse.search(query).map(res => res.item);
+      const results = fuse.search(trimmedQuery).map(res => res.item);
       setFilteredItems(results);
     }
   };
