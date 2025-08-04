@@ -53,12 +53,6 @@ function SearchHandle({ handleSearch }: SearchHandleProps) {
         handleSearch(inputValue);
         setIsSearching(true);
         setTimeout(() => setIsSearching(false), 300);
-
-        if (typeof window !== 'undefined' && window.innerWidth <= 768) {
-            setTimeout(() => {
-                resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 100);
-        }
     };
 
     return (
