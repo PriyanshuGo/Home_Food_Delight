@@ -64,31 +64,33 @@ export default function Navigation() {
           </div>
 
           {/* Cart & Mobile Menu */}
-          <div className="flex items-center space-x-4">
-            <Button
-              variant="outline"
-              size="sm"
-              className="relative border-saffron text-saffron hover:bg-saffron hover:text-white"
-            >
-              <ShoppingBag className="h-4 w-4 mr-2" />
-              <span className="hidden sm:inline">Cart</span>
-              {cartItems.length ? (<Badge
-                variant="destructive"
-                className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs bg-saffron"
+          <Link href="/cart">
+            <div className="flex items-center space-x-4">
+              <Button
+                variant="outline"
+                size="sm"
+                className="relative border-saffron text-saffron hover:bg-saffron hover:text-white"
               >
-                {cartItems.length}
-              </Badge>) : null}
-            </Button>
+                <ShoppingBag className="h-4 w-4 mr-2" />
+                <span className="hidden sm:inline">Cart</span>
+                {cartItems.length ? (<Badge
+                  variant="destructive"
+                  className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs bg-saffron"
+                >
+                  {cartItems.length}
+                </Badge>) : null}
+              </Button>
 
-            <Button
-              variant="ghost"
-              size="sm"
-              className="md:hidden text-brown"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            >
-              {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </Button>
-          </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="md:hidden text-brown"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              >
+                {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              </Button>
+            </div>
+          </Link>
         </div>
 
         {/* Mobile Menu */}

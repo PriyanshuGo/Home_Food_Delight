@@ -303,3 +303,4 @@ export const categories: Category[] = [
     { id: 'main-course', name: `MAIN COURSE`, icon: '🍛' },          // Curry rice plate
     { id: 'economy-meals', name: `ECONOMY MEALS`, icon: '💰' },      // Money bag for budget meals
   ];
+

@@ -5,19 +5,21 @@ import { Button } from '@/components/ui/button';
 import { menuItems } from '@/utils/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, updateQuantity, removeFromCart } from '@/redux/cartSlice';
-import { ProductItem, CartItem } from '@/types/product'
 import { RootState } from '@/redux/store';
+import { ProductItem, CartItem } from '@/types/product'
 import MenuCard from '@/app/menu/MenuCard';
 import SearchHandle from './SearchHandle';
 import CategoryFilter from './CategoryFilter';
 import Fuse from 'fuse.js';
+import { motion, AnimatePresence } from 'framer-motion';
+
 
 
 const MenuPage = () => {
   const dispatch = useDispatch();
+  const activeCategory = useSelector((state: RootState) => state.category.activeCategory);
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const [filteredItems, setFilteredItems] = useState<ProductItem[]>(menuItems);
-  const [activeCategory, setActiveCategory] = useState('all');
   const resultRef = useRef<HTMLDivElement | null>(null);
 
   const filterByCategory = (category: string): void => {
@@ -54,9 +56,7 @@ const MenuPage = () => {
   };
 
   useEffect(() => {
-    if (activeCategory !== "") {
-      filterByCategory(activeCategory);
-    }
+    filterByCategory(activeCategory);
   }, [activeCategory]);
 
   const handleAddToCart = (item: ProductItem): void => {
@@ -92,28 +92,36 @@ const MenuPage = () => {
               handleSearch={handleSearch}
             />
 
-            <CategoryFilter
-              activeCategory={activeCategory}
-              setActiveCategory={setActiveCategory}
-            />
+            <CategoryFilter />
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 mb-8"
             ref={resultRef}>
-            {filteredItems.map((item: ProductItem) => {
-              const cartItem = cartItems.find((ci: CartItem) => ci.id === item.id);
-              const quantity = cartItem ? cartItem.quantity : 0;
-              return (
-                <MenuCard
-                  key={item.id}
-                  item={item}
-                  quantity={quantity}
-                  onAddToCart={handleAddToCart}
-                  onUpdateQuantity={handleUpdateQuantity}
-                  onRemoveFromCart={handleRemoveFromCart}
-                />
-              )
-            })}
+            <AnimatePresence mode="popLayout">
+              {filteredItems.map((item: ProductItem) => {
+                const cartItem = cartItems.find((ci: CartItem) => ci.id === item.id);
+                const quantity = cartItem ? cartItem.quantity : 0;
+                return (
+                  <motion.div
+                    key={item.id}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <MenuCard
+                      key={item.id}
+                      item={item}
+                      quantity={quantity}
+                      onAddToCart={handleAddToCart}
+                      onUpdateQuantity={handleUpdateQuantity}
+                      onRemoveFromCart={handleRemoveFromCart}
+                    />
+                  </motion.div>
+                )
+              })}
+            </AnimatePresence>
+
           </div>
 
           {/* No Results Message */}

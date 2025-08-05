@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { ProductItem } from '@/types/product';
 
+
 interface MenuCardProps {
     item: ProductItem;
     quantity: number;
