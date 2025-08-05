@@ -62,7 +62,7 @@ function SearchHandle({ handleSearch }: SearchHandleProps) {
                     {...getInputProps({
                         placeholder: 'Search for dishes...',
                         onFocus: () => { },
-                        className: 'w-full',
+                        className: 'w-full form-field',
                         onKeyDown: (e) => {
                             if (e.key === 'Enter') {
                                 e.preventDefault(); // prevent Downshift from handling it
