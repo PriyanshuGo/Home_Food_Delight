@@ -1,6 +1,7 @@
 import React from 'react'
 import { MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 function OrderViaWhatsapp() {
     return (
         <div className="space-y-3">
@@ -9,7 +10,9 @@ function OrderViaWhatsapp() {
             </Button>
 
             <div className="flex gap-2">
-                <Button variant="outline" className="flex-1">Continue Shopping</Button>
+                <Link href="/menu" className="flex-1">
+                    <Button variant="outline" className='w-full'>Continue Shopping</Button>
+                </Link>
                 <Button variant="destructive" className="flex-1">Clear Cart</Button>
             </div>
         </div>
