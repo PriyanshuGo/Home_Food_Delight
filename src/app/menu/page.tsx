@@ -17,9 +17,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const MenuPage = () => {
   const dispatch = useDispatch();
+  const activeCategory = useSelector((state: RootState) => state.category.activeCategory);
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const [filteredItems, setFilteredItems] = useState<ProductItem[]>(menuItems);
-  const [activeCategory, setActiveCategory] = useState('all');
   const resultRef = useRef<HTMLDivElement | null>(null);
 
   const filterByCategory = (category: string): void => {
@@ -56,9 +56,7 @@ const MenuPage = () => {
   };
 
   useEffect(() => {
-    if (activeCategory !== "") {
-      filterByCategory(activeCategory);
-    }
+    filterByCategory(activeCategory);
   }, [activeCategory]);
 
   const handleAddToCart = (item: ProductItem): void => {
@@ -94,10 +92,7 @@ const MenuPage = () => {
               handleSearch={handleSearch}
             />
 
-            <CategoryFilter
-              activeCategory={activeCategory}
-              setActiveCategory={setActiveCategory}
-            />
+            <CategoryFilter />
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 mb-8"
