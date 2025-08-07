@@ -38,7 +38,7 @@ function CartItems() {
                         <div className="flex items-center justify-between p-3 bg-warm-beige/30 rounded-lg" key={item.id}>
                             <div className="flex-1">
                                 <h4 className="font-medium text-brown">{item.name}</h4>
-                                <p className="text-sm text-muted-foreground">{item.price}</p>
+                                <p className="text-sm text-muted-foreground">₹{item.price}</p>
                             </div>
                             <div className="flex items-center space-x-3">
                                 <div className="flex items-center space-x-2">
