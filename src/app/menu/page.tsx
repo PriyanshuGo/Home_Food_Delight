@@ -12,10 +12,12 @@ import SearchHandle from './SearchHandle';
 import CategoryFilter from './CategoryFilter';
 import Fuse from 'fuse.js';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 
 
 
 const MenuPage = () => {
+  const router = useRouter();
   const dispatch = useDispatch();
   const activeCategory = useSelector((state: RootState) => state.category.activeCategory);
   const cartItems = useSelector((state: RootState) => state.cart.items);
@@ -139,6 +141,7 @@ const MenuPage = () => {
               <Button
                 size="lg"
                 className="bg-saffron hover:bg-saffron-dark text-white px-6 py-3 rounded-full shadow-warm-lg"
+                onClick={() => router.push('/cart')}
               >
                 <ShoppingCart className="h-5 w-5 mr-2" />
                 View Cart ({cartItems.length} items)

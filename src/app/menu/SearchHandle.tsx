@@ -15,7 +15,6 @@ interface SearchHandleProps {
 function SearchHandle({ handleSearch }: SearchHandleProps) {
     const [inputValue, setInputValue] = useState('');
     const [isSearching, setIsSearching] = useState(false);
-    const resultRef = useRef<HTMLDivElement | null>(null);
 
     const fuse = useMemo(() => new Fuse<ProductItem>(menuItems, {
         keys: ['name', 'description', 'category'],
