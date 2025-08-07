@@ -18,13 +18,14 @@ import {
   DialogHeader,
   DialogTitle
 } from "@/components/ui/dialog";
-import { set, useForm } from "react-hook-form";
-import { RootState } from "@/redux/store"; 4
+import { useForm } from "react-hook-form";
+import { RootState } from "@/redux/store";
 import { useDispatch, useSelector } from 'react-redux';
 import { setDeliveryDetails } from "@/redux/DeliveryDetailsSlice";
 import { auth } from "@/lib/firebase";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
-import { c } from "framer-motion/dist/types.d-Cjd591yU";
+import { ConfirmationResult } from "firebase/auth";
+
 
 
 
@@ -52,7 +53,7 @@ const DeliveryDetails = () => {
 
 
   const [otpDialogOpen, setOtpDialogOpen] = useState(false);
-  const [confirmationResult, setConfirmationResult] = useState<any>(null);
+  const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult | null>(null);
 
   const [otp, setOtp] = useState("");
   const [otpStatus, setOtpStatus] = useState("");
@@ -62,7 +63,7 @@ const DeliveryDetails = () => {
     if (typeof window !== "undefined" && !window.recaptchaVerifier) {
       window.recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container", {
         size: "invisible",
-        callback: (response: any) => {
+        callback: (response: string) => {
           // reCAPTCHA solved
         },
         'expired-callback': () => {
@@ -161,18 +162,27 @@ const DeliveryDetails = () => {
     }
   };
   const handleVerifyOtp = async () => {
+    if (!confirmationResult) {
+      console.error("No confirmation result. Please request OTP again.");
+      return;
+    }
+
     try {
       await confirmationResult.confirm(otp); // Enter 123456 for test
       alert("Phone verified!");
     } catch (err) {
-      console.error("Invalid OTP");
+      console.error("Invalid OTP", err);
     }
   };
 
-  // ✅ OTP submit check
   const handleOtpSubmit = async () => {
+    if (!confirmationResult) {
+      alert("Something went wrong. Please request OTP again.");
+      return;
+    }
+
     try {
-      await confirmationResult.confirm(otp); // Enter 123456 for test
+      await confirmationResult.confirm(otp);
       setOtpStatus("success");
       setTimeout(() => {
         setOtpDialogOpen(false);
@@ -182,6 +192,7 @@ const DeliveryDetails = () => {
       alert("❌ Invalid OTP");
     }
   };
+
 
   // ✅ OTP resend cooldown
   const startResendTimer = () => {
