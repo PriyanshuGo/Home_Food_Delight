@@ -5,6 +5,8 @@ import Navigation from "@/components/Navigation";
 import ReduxProvider from '@/components/ReduxProvider'; // ✅ Client wrapper
 import ScrollManager from "@/components/ScrollManager";
 import { Toaster } from "react-hot-toast";
+import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 
 
@@ -43,6 +45,8 @@ export default function RootLayout({
           <Navigation />
           <ScrollManager />
           {children}
+          <Analytics />
+          <SpeedInsights />
           <Toaster position="top-right" reverseOrder={false} />
         </ReduxProvider>
       </body>

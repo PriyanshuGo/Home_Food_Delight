@@ -144,7 +144,7 @@ const DeliveryDetails = () => {
             <Label htmlFor="name">Full Name *</Label>
             <Input
               id="name"
-              className="form-field w-1/2"
+              className="form-field md:w-1/2"
               placeholder="Enter your full name"
               {...register("name", {
                 required: "Name is required",
