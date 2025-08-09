@@ -49,14 +49,6 @@ function MenuCard ({ item, quantity, onAddToCart, onUpdateQuantity, onRemoveFrom
                             </Badge>
                         )}
                     </div>
-
-                    {/* Rating */}
-                    <div className="absolute top-3 right-3 bg-white/90 px-2 py-1 rounded-full">
-                        <div className="flex items-center space-x-1">
-                            <Star className="h-3 w-3 text-saffron fill-current" />
-                            <span className="text-xs font-medium">{item.rating}</span>
-                        </div>
-                    </div>
                 </div>
 
                 {/* Card Header */}

@@ -18,7 +18,6 @@ function PopularDishes() {
             description: 'Traditional kidney bean curry served with steamed basmati rice',
             price: 120,
             image: '/menuItems/FishFry.webp',
-            rating: 4.8,
             popular: true
         },
         {
@@ -27,7 +26,6 @@ function PopularDishes() {
             description: 'Yellow lentil curry with roti, rice, pickle, and salad',
             price: 100,
             image: '/menuItems/FishFry.webp',
-            rating: 4.7,
             popular: true
         },
         {
@@ -36,7 +34,6 @@ function PopularDishes() {
             description: 'Spiced chickpea curry served with fluffy deep-fried bread',
             price: 140,
             image: '/menuItems/FishFry.webp',
-            rating: 4.9,
             popular: true
         },
         {
@@ -45,7 +42,6 @@ function PopularDishes() {
             description: 'Creamy cottage cheese curry with naan and rice',
             price: 160,
             image: '/menuItems/FishFry.webp',
-            rating: 4.8,
             popular: true
         }
     ];
@@ -81,12 +77,6 @@ function PopularDishes() {
                                             Popular
                                         </Badge>
                                     )}
-                                    <div className="absolute top-3 right-3 bg-white/90 px-2 py-1 rounded-full">
-                                        <div className="flex items-center space-x-1">
-                                            <Star className="h-3 w-3 text-saffron fill-current" />
-                                            <span className="text-xs font-medium">{dish.rating}</span>
-                                        </div>
-                                    </div>
                                 </div>
                                 <CardHeader className="pb-2">
                                     <CardTitle className="text-lg text-brown">{dish.name}</CardTitle>

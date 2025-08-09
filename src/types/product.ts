@@ -7,7 +7,6 @@ export interface ProductItem {
   price: number;
   category: string;
   image: string;
-  rating: number;
   veg: boolean;
   popular: boolean;
   preparationTime: string;
