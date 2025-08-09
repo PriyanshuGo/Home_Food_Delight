@@ -4,6 +4,8 @@ import "./globals.css";
 import Navigation from "@/components/Navigation";
 import ReduxProvider from '@/components/ReduxProvider'; // ✅ Client wrapper
 import ScrollManager from "@/components/ScrollManager";
+import { Toaster } from "react-hot-toast";
+
 
 
 const geistSans = Geist({
@@ -41,6 +43,7 @@ export default function RootLayout({
           <Navigation />
           <ScrollManager />
           {children}
+          <Toaster position="top-right" reverseOrder={false} />
         </ReduxProvider>
       </body>
     </html>
