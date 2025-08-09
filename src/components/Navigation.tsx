@@ -31,7 +31,9 @@ export default function Navigation() {
           {/* Logo */}
           <div className="flex items-center space-x-3 cursor-pointer">
             <div className="w-10 h-10 bg-gradient-warm rounded-full flex items-center justify-center">
+              <Link href="/">
               <Image src="/logo.jpg" alt="Logo" width={40} height={40} className="rounded-full" />
+              </Link>
             </div>
             <div>
               <h1 className="text-lg font-bold text-brown">Home Food Delight</h1>
@@ -68,7 +70,7 @@ export default function Navigation() {
               <Button
                 variant="outline"
                 size="sm"
-                className="relative border-saffron text-saffron hover:bg-saffron hover:text-white"
+                className="relative border-saffron text-saffron hover:bg-saffron"
               >
                 <ShoppingBag className="h-4 w-4 mr-2" />
                 <span className="hidden sm:inline">Cart</span>

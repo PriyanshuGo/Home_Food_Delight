@@ -4,9 +4,11 @@ import "./globals.css";
 import Navigation from "@/components/Navigation";
 import ReduxProvider from '@/components/ReduxProvider'; // ✅ Client wrapper
 import ScrollManager from "@/components/ScrollManager";
-import { Toaster } from "react-hot-toast";
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { c } from "framer-motion/dist/types.d-Cjd591yU";
 
 
 
@@ -45,9 +47,16 @@ export default function RootLayout({
           <Navigation />
           <ScrollManager />
           {children}
+          <ToastContainer
+            position="top-right"
+            autoClose={3000}
+            hideProgressBar={false}
+            closeOnClick
+            pauseOnHover
+            draggable
+          />
           <Analytics />
           <SpeedInsights />
-          <Toaster position="top-right" reverseOrder={false} />
         </ReduxProvider>
       </body>
     </html>
