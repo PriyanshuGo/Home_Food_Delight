@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Card,
   CardHeader,
@@ -23,7 +23,8 @@ import { RootState } from "@/redux/store";
 import { useDispatch, useSelector } from 'react-redux';
 import { setDeliveryDetails } from "@/redux/DeliveryDetailsSlice";
 import { clearCart } from "@/redux/cartSlice";
-import toast from "react-hot-toast";
+import { toast } from 'react-toastify';
+
 
 
 interface FormData {
@@ -40,6 +41,9 @@ const DeliveryDetails = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [newAddress, setNewAddress] = useState("");
   const [newAddressError, setNewAddressError] = useState("");
+
+  const toastShownRef = useRef(false);
+
 
 
 
