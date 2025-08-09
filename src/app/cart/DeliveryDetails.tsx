@@ -22,29 +22,19 @@ import { useForm } from "react-hook-form";
 import { RootState } from "@/redux/store";
 import { useDispatch, useSelector } from 'react-redux';
 import { setDeliveryDetails } from "@/redux/DeliveryDetailsSlice";
-import { auth } from "@/lib/firebase";
-import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
-import { ConfirmationResult } from "firebase/auth";
-
-
-
+import { clearCart } from "@/redux/cartSlice";
+import toast from "react-hot-toast";
 
 
 interface FormData {
   name: string;
-  mobileNumber: string;
   address: string[];
   selectedAddress: string;
   instructions: string;
 }
 
-declare global {
-  interface Window {
-    recaptchaVerifier: RecaptchaVerifier;
-  }
-}
-
 const DeliveryDetails = () => {
+  const cartItems = useSelector((state: RootState) => state.cart.items);
   const deliveryDetails = useSelector((state: RootState) => state.deliveryDetails);
   const [savedAddresses, setSavedAddresses] = useState<string[]>(deliveryDetails.address || []);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -52,35 +42,15 @@ const DeliveryDetails = () => {
   const [newAddressError, setNewAddressError] = useState("");
 
 
-  const [otpDialogOpen, setOtpDialogOpen] = useState(false);
-  const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult | null>(null);
-
-  const [otp, setOtp] = useState("");
-  const [otpStatus, setOtpStatus] = useState("");
-  const [resendCooldown, setResendCooldown] = useState(0);
-
-  useEffect(() => {
-    if (typeof window !== "undefined" && !window.recaptchaVerifier) {
-      window.recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container", {
-        size: "invisible",
-        callback: (response: string) => {
-          // reCAPTCHA solved
-        },
-        'expired-callback': () => {
-          // reCAPTCHA expired
-        },
-      });
-      window.recaptchaVerifier.render().catch(console.error);
-    }
-  }, []);
-
 
   const dispatch = useDispatch();
+
   useEffect(() => {
     if (deliveryDetails && Object.keys(deliveryDetails).length > 0) {
       reset(deliveryDetails);
     }
     setSavedAddresses(deliveryDetails.address || []);
+    console.log(deliveryDetails);
   }, [deliveryDetails]);
 
   const {
@@ -93,7 +63,6 @@ const DeliveryDetails = () => {
   } = useForm<FormData>({
     defaultValues: {
       name: deliveryDetails?.name || '',
-      mobileNumber: deliveryDetails?.mobileNumber || '',
       selectedAddress: deliveryDetails?.selectedAddress || ''
     }
   });
@@ -125,11 +94,9 @@ const DeliveryDetails = () => {
 
     setSavedAddresses(updated);
     if (watch("selectedAddress") === removedAddress) {
-      setValue("selectedAddress", "");
+      setValue("selectedAddress", savedAddresses[0] || "");
     }
   };
-
-
 
   // ✅ Final form submit
   const onSubmit = (data: FormData) => {
@@ -139,79 +106,29 @@ const DeliveryDetails = () => {
     }
     const { instructions, ...rest } = data;
     const deliveryDetails = { ...rest, address: savedAddresses };
-    console.log(deliveryDetails);
-    //remove some key 
     dispatch(setDeliveryDetails(deliveryDetails));
 
-    // Simulate sending OTP here
-    setOtpDialogOpen(true);
-    handleSendOtp(data.mobileNumber);
-    startResendTimer();
-    setOtp("");
-    setOtpStatus("");
-  };
+    if (cartItems.length > 0) {
+      const mobileNumber = "8448725576";
+      const totalAmount = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-  const handleSendOtp = async (mobileNumber: string) => {
-    try {
-      const appVerifier = window.recaptchaVerifier;
-      const confirmation = await signInWithPhoneNumber(auth, `+91${mobileNumber}`, appVerifier);
-      setConfirmationResult(confirmation); // 🔐 Save for OTP verification
-      console.log("OTP sent!", confirmation);
-    } catch (error) {
-      console.error("Failed to send OTP", error);
+      const message =
+        `🛒 *New Order Received*\n\n` +
+        `👤 *Name:* ${data.name}\n` +
+        `🏠 *Address:* ${data.selectedAddress}\n` +
+        `📝 *Instructions:* ${instructions?.trim() || "None"}\n\n` +
+        `📦 *Items Ordered:*\n` +
+        cartItems.map(
+          (item) => `• ${item.name} x${item.quantity} — ₹${item.price * item.quantity}`
+        ).join("\n") +
+        `\n\n💰 *Total:* ₹${totalAmount} + _delivery Charges\n` +
+        `\n✅ Please confirm the order.`; const whatsappUrl = `https://wa.me/${mobileNumber}?text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, "_blank");
+      reset({ instructions: "" });
+      dispatch(clearCart());
+    } else {
+      toast.error("🛒 Your cart is empty. Please add items before placing an order.");
     }
-  };
-  const handleVerifyOtp = async () => {
-    if (!confirmationResult) {
-      console.error("No confirmation result. Please request OTP again.");
-      return;
-    }
-
-    try {
-      await confirmationResult.confirm(otp); // Enter 123456 for test
-      alert("Phone verified!");
-    } catch (err) {
-      console.error("Invalid OTP", err);
-    }
-  };
-
-  const handleOtpSubmit = async () => {
-    if (!confirmationResult) {
-      alert("Something went wrong. Please request OTP again.");
-      return;
-    }
-
-    try {
-      await confirmationResult.confirm(otp);
-      setOtpStatus("success");
-      setTimeout(() => {
-        setOtpDialogOpen(false);
-        alert("✅ Order placed successfully!");
-      }, 1000);
-    } catch (err) {
-      alert("❌ Invalid OTP");
-    }
-  };
-
-
-  // ✅ OTP resend cooldown
-  const startResendTimer = () => {
-    setResendCooldown(30);
-    const interval = setInterval(() => {
-      setResendCooldown(prev => {
-        if (prev <= 1) {
-          clearInterval(interval);
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-  };
-
-  const handleResendOtp = () => {
-    setOtp("");
-    startResendTimer();
-    setOtpStatus("");
   };
 
   return (
@@ -227,7 +144,7 @@ const DeliveryDetails = () => {
             <Label htmlFor="name">Full Name *</Label>
             <Input
               id="name"
-              className="form-field"
+              className="form-field w-1/2"
               placeholder="Enter your full name"
               {...register("name", {
                 required: "Name is required",
@@ -236,23 +153,6 @@ const DeliveryDetails = () => {
               })}
             />
             {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
-          </div>
-
-          {/* Mobile Number */}
-          <div className="space-y-2">
-            <Label htmlFor="mobile">Mobile Number *</Label>
-            <Input
-              id="mobile"
-              className="form-field"
-              placeholder="10-digit number"
-              type="tel"
-              maxLength={10}
-              {...register("mobileNumber", {
-                required: "Mobile number is required",
-                pattern: { value: /^[0-9]{10}$/, message: "Enter a valid 10-digit number" }
-              })}
-            />
-            {errors.mobileNumber && <p className="text-red-500 text-sm">{errors.mobileNumber.message}</p>}
           </div>
 
           {/* Address */}
@@ -338,7 +238,7 @@ const DeliveryDetails = () => {
               id="instructions"
               className="form-field"
               rows={3}
-              placeholder="e.g., Call before delivery"
+              placeholder="Add special requests"
               {...register("instructions")}
             />
           </div>
@@ -347,40 +247,6 @@ const DeliveryDetails = () => {
           <Button type="submit" className="w-full">Continue</Button>
         </form>
       </CardContent>
-
-      {/* OTP Dialog */}
-      <Dialog open={otpDialogOpen} onOpenChange={setOtpDialogOpen}>
-        <DialogContent className="max-w-md w-full">
-          <DialogHeader>
-            <DialogTitle>OTP Verification</DialogTitle>
-          </DialogHeader>
-
-          <div className="space-y-4">
-            <Input
-              placeholder="Enter 6-digit OTP"
-              maxLength={6}
-              value={otp}
-              onChange={(e) => setOtp(e.target.value)}
-              className="form-field"
-            />
-            {otpStatus === "error" && <p className="text-red-500 text-sm">Invalid OTP. Try again.</p>}
-            {otpStatus === "success" && <p className="text-green-600 text-sm">✅ Verified!</p>}
-
-            <Button onClick={handleOtpSubmit} className="w-full">Submit OTP</Button>
-
-            <div className="text-center text-sm mt-2">
-              {resendCooldown > 0 ? (
-                <p className="text-muted-foreground">Resend OTP in {resendCooldown}s</p>
-              ) : (
-                <Button variant="link" type="button" onClick={handleResendOtp} className="text-saffron-dark">
-                  Resend OTP
-                </Button>
-              )}
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-      <div id="recaptcha-container" />
     </Card>
   );
 };

@@ -2,14 +2,12 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface DeliveryDetailsState {
   name: string;
-  mobileNumber: string;
   address: string[];
   selectedAddress: string;
 }
 
 const initialState: DeliveryDetailsState = {
   name: "",
-  mobileNumber: "",
   address: [],
   selectedAddress: "",
 };
@@ -23,7 +21,6 @@ const deliveryDetailSlice = createSlice({
     },
     clearDeliveryDetails(state) {
       state.name = "";
-      state.mobileNumber = "";
       state.address = [];
       state.selectedAddress = "";
     },
