@@ -1,11 +1,8 @@
-import React from 'react'
-
-function ContactPage() {
+import Info from "./Info";
+export default function ContactPage() {
   return (
     <div>
-      
+      <Info />
     </div>
-  )
+  );
 }
-
-export default ContactPage

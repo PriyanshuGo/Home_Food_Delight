@@ -42,10 +42,9 @@ export default function Footer() {
           <motion.div variants={fadeUp}>
             <div className="flex items-center space-x-3 mb-4">
               <motion.div variants={popIn}>
-                <Image src="/logo.jpg" alt="Logo" width={40} height={40} className="rounded-full" />
               </motion.div>
               <div>
-                <h3 className="text-lg text-white">Home Food Delight</h3>
+                <h3 className="text-lg text-white">Home Food Delite</h3>
                 <p className="text-sm text-white/70">Authentic Tiffin Service</p>
               </div>
             </div>
@@ -68,20 +67,19 @@ export default function Footer() {
               <div className="flex space-x-3">
                 <MapPin className="h-4 w-4 text-saffron mt-1" />
                 <div>
-                  <p>Flat No. 1, Tower B, Anandam Apartment,</p>
-                  <p>Dwarka Sector 28, New Delhi</p>
+                  <p>123 Main St Anytown CA</p>
                 </div>
               </div>
               <div className="flex space-x-3">
                 <Phone className="h-4 w-4 text-saffron" />
-                <a href="tel:+918882292184" className="hover:text-white transition-colors">
-                  +91 88822 92184
+                <a href="tel:+ (555) 123-4567" className="hover:text-white transition-colors">
+                  +91 555 123-4567
                 </a>
               </div>
               <div className="flex space-x-3">
                 <Mail className="h-4 w-4 text-saffron" />
-                <a href="mailto:homefooddelightdelhi@gmail.com" className="hover:text-white transition-colors">
-                  homefooddelightdelhi@gmail.com
+                <a href="mailto:info@greeneartlandscaping.com" className="hover:text-white transition-colors">
+                  info@greeneartlandscaping.com
                 </a>
               </div>
             </div>
@@ -131,28 +129,11 @@ export default function Footer() {
         {/* Bottom Section */}
         <motion.div variants={fadeUp} className="flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="text-center md:text-left">
-            <p className="text-sm text-white/70">&copy; 2025 Home Food Delight.</p>
+            <p className="text-sm text-white/70">&copy;  Home Food Delite.</p>
             <p className="text-xs text-white/60">Made with ❤️ for food lovers everywhere</p>
           </div>
           <div>
-            <h4 className="text-sm text-white mb-3">Follow Us</h4>
-            <div className="flex space-x-3">
-              {[ 
-                { icon: Instagram, link: "https://www.instagram.com/homefooddelightdelhi/" },
-                { icon: Twitter, link: "https://www.linkedin.com/company/home-food-delight/posts/?feedView=all" }
-              ].map(({ icon: Icon, link }, idx) => (
-                <motion.a
-                  whileHover={{ scale: 1.15, rotate: 5 }}
-                  whileTap={{ scale: 0.9 }}
-                  key={idx}
-                  href={link}
-                  target="_blank"
-                  className="w-8 h-8 bg-saffron/20 rounded-full flex items-center justify-center hover:bg-saffron transition-colors"
-                >
-                  <Icon className="h-4 w-4 text-white" />
-                </motion.a>
-              ))}
-            </div>
+
           </div>
         </motion.div>
 

@@ -19,7 +19,6 @@ export default function Navigation() {
   const navItems = [
     { id: 'home', label: 'Home', link: '/' },
     { id: 'menu', label: 'Menu', link: '/menu' },
-    { id: 'contact', label: 'Contact', link: '/contact' },
   ];
 
   const cartItems = useSelector((state: RootState) => state.cart.items);
@@ -32,7 +31,6 @@ export default function Navigation() {
           <div className="flex items-center space-x-3 cursor-pointer">
             <div className="w-10 h-10 bg-gradient-warm rounded-full flex items-center justify-center">
               <Link href="/">
-              <Image src="/logo.jpg" alt="Logo" width={40} height={40} className="rounded-full" />
               </Link>
             </div>
             <div>
@@ -65,8 +63,8 @@ export default function Navigation() {
           </div>
 
           {/* Cart & Mobile Menu */}
-          <Link href="/cart">
-            <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-4">
+            <Link href="/cart">
               <Button
                 variant="outline"
                 size="sm"
@@ -81,17 +79,17 @@ export default function Navigation() {
                   {cartItems.length}
                 </Badge>) : null}
               </Button>
+            </Link>
 
-              <Button
-                variant="ghost"
-                size="sm"
-                className="md:hidden text-brown"
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              >
-                {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-              </Button>
-            </div>
-          </Link>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="md:hidden text-brown"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </Button>
+          </div>
         </div>
 
         {/* Mobile Menu */}
